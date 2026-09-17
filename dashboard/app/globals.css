@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -14,44 +14,75 @@
     @apply scroll-smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   body {
-    @apply bg-surface-950 text-white font-sans;
+    @apply bg-[#050507] text-[#f1f3f9] font-sans;
+    background-color: #050507;
   }
 
   ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
   }
-  ::-webkit-scrollbar-track { @apply bg-surface-900; }
-  ::-webkit-scrollbar-thumb { @apply bg-surface-500 rounded-full; }
-  ::-webkit-scrollbar-thumb:hover { @apply bg-brand-500; }
+  ::-webkit-scrollbar-track { background: #08090d; }
+  ::-webkit-scrollbar-thumb { background: #1f2230; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #10b981; }
 }
 
 /* ─── Components ────────────────────────────────────────────────────────────── */
 @layer components {
-  /* Glass card */
+  /* Double-Bezel (Doppelrand) Nested Hardware Architecture */
+  .bezel-chassis {
+    @apply relative rounded-[26px] bg-white/[0.025] border border-white/[0.07] p-1.5 transition-all duration-300;
+    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  }
+  .bezel-chassis:hover {
+    @apply border-white/[0.12];
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .bezel-core {
+    @apply rounded-[20px] bg-[#090a0f] p-5 relative overflow-hidden transition-all duration-300;
+    box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.09);
+  }
+
+  /* High-End Glass Card */
   .card {
-    @apply bg-glass border border-white/[0.06] rounded-2xl shadow-glass backdrop-blur-sm;
-    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    @apply relative rounded-2xl bg-[#090a0f]/90 border border-white/[0.07] transition-all duration-200;
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .card:hover {
+    @apply border-white/[0.11];
   }
 
   /* Buttons */
   .btn-primary {
-    @apply bg-gradient-brand text-white font-semibold px-5 py-2.5 rounded-xl
-           hover:opacity-90 active:scale-95 transition-all duration-150
-           shadow-glow-sm hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold px-5 py-2.5 rounded-xl
+           hover:from-emerald-400 hover:to-teal-500 active:scale-[0.98] transition-all duration-200
+           shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.45)]
+           disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight;
+  }
+
+  .btn-pill-action {
+    @apply group inline-flex items-center gap-3 bg-white/[0.06] hover:bg-white/[0.1] text-white/90 hover:text-white
+           border border-white/[0.1] hover:border-white/[0.2] px-4 py-2 rounded-full text-xs font-semibold
+           transition-all duration-200 shadow-sm active:scale-[0.97];
+  }
+  .btn-pill-icon {
+    @apply w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white/80
+           group-hover:bg-white/20 group-hover:text-white transition-all duration-200;
   }
 
   .btn-secondary {
-    @apply bg-surface-700 border border-white/[0.07] text-white font-medium px-5 py-2.5 rounded-xl
-           hover:bg-surface-600 active:scale-95 transition-all duration-150;
+    @apply inline-flex items-center justify-center gap-2 bg-[#12141c] border border-white/[0.08] text-white/90 font-medium px-4 py-2.5 rounded-xl
+           hover:bg-[#1a1c26] hover:text-white hover:border-white/[0.15] active:scale-[0.98] transition-all duration-200 text-sm;
   }
 
   .btn-ghost {
-    @apply text-white/60 font-medium px-3 py-2 rounded-lg
-           hover:text-white hover:bg-surface-700 transition-all duration-150;
+    @apply inline-flex items-center justify-center gap-1.5 text-white/60 font-medium px-3 py-2 rounded-xl
+           hover:text-white hover:bg-white/[0.05] transition-all duration-200 text-sm;
   }
 
   /* ─── Efeito Exato Asimov: Raio de Luz Giratório em Volta do Botão & Sombra ── */
@@ -206,25 +237,25 @@
 
   /* Inputs */
   .input {
-    @apply w-full bg-surface-700 border border-white/[0.07] text-white placeholder-white/30
-           rounded-xl px-4 py-3 text-sm outline-none
-           focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30
-           transition-all duration-150;
+    @apply w-full bg-[#0d0f17] border border-white/[0.08] text-white placeholder-white/25
+           rounded-xl px-4 py-2.5 text-sm outline-none
+           focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/20
+           transition-all duration-200 shadow-inner;
   }
 
   .label {
-    @apply block text-sm font-medium text-white/70 mb-1.5;
+    @apply block text-xs font-semibold text-white/70 uppercase tracking-wider mb-1.5;
   }
 
   /* Badge */
   .badge {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide;
   }
-  .badge-green  { @apply badge bg-brand-500/15 text-brand-400; }
-  .badge-yellow { @apply badge bg-yellow-500/15 text-yellow-400; }
-  .badge-red    { @apply badge bg-red-500/15 text-red-400; }
-  .badge-blue   { @apply badge bg-blue-500/15 text-blue-400; }
-  .badge-gray   { @apply badge bg-white/10 text-white/50; }
+  .badge-green  { @apply badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/25; }
+  .badge-yellow { @apply badge bg-amber-500/15 text-amber-300 border border-amber-500/25; }
+  .badge-red    { @apply badge bg-rose-500/15 text-rose-400 border border-rose-500/25; }
+  .badge-blue   { @apply badge bg-cyan-500/15 text-cyan-300 border border-cyan-500/25; }
+  .badge-gray   { @apply badge bg-white/[0.07] text-white/60 border border-white/[0.08]; }
 
   /* Stat card */
   .stat-card {
@@ -233,25 +264,26 @@
 
   /* Sidebar nav item */
   .nav-item {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
-           text-white/50 hover:text-white hover:bg-surface-700 
-           transition-all duration-150 cursor-pointer;
+    @apply flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium
+           text-white/55 hover:text-white hover:bg-white/[0.05]
+           transition-all duration-200 cursor-pointer;
   }
   .nav-item.active {
-    @apply text-white bg-brand-500/10 border border-brand-500/20;
+    @apply text-white bg-gradient-to-r from-emerald-500/15 to-teal-500/10 border border-emerald-500/30;
+    box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   /* Status dot */
   .status-dot {
-    @apply w-2 h-2 rounded-full inline-block;
+    @apply w-2 h-2 rounded-full inline-block flex-shrink-0;
   }
-  .status-dot.connected    { @apply bg-brand-400 shadow-[0_0_6px_rgba(37,164,94,0.8)]; }
-  .status-dot.disconnected { @apply bg-red-400; }
-  .status-dot.connecting   { @apply bg-yellow-400 animate-pulse; }
+  .status-dot.connected    { @apply bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.9)]; }
+  .status-dot.disconnected { @apply bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]; }
+  .status-dot.connecting   { @apply bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.6)]; }
 
   /* Glow text */
   .text-glow {
-    text-shadow: 0 0 20px rgba(37, 164, 94, 0.5);
+    text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
   }
 
   /* Message bubble */
