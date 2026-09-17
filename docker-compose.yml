@@ -1,0 +1,149 @@
+services:
+  # ─────────────────────────────────────────────
+  # PostgreSQL com extensão pgvector
+  # ─────────────────────────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: zapia_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-zapia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zapia_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-zapia_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zapia}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - zapia_net
+
+  # ─────────────────────────────────────────────
+  # Redis — Cache, sessões e filas
+  # ─────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: zapia_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-redis_secret}
+    ports:
+      - "127.0.0.1:6380:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_secret}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - zapia_net
+
+  # ─────────────────────────────────────────────
+  # Evolution API — Gateway WhatsApp
+  # ─────────────────────────────────────────────
+  evolution-api:
+    image: evoapicloud/evolution-api:latest
+    container_name: zapia_evolution
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8085:8080"
+    environment:
+      SERVER_URL: ${EVOLUTION_SERVER_URL:-https://atendai.ftech-apps.com.br/whatsapp}
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY:-zapia_evolution_key}
+      AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES: "true"
+      DATABASE_ENABLED: "true"
+      DATABASE_PROVIDER: postgresql
+      DATABASE_CONNECTION_URI: postgresql://${POSTGRES_USER:-zapia}:${POSTGRES_PASSWORD:-zapia_secret}@postgres:5432/${POSTGRES_DB:-zapia_db}
+      DATABASE_CONNECTION_CLIENT_NAME: evolution_api
+      DATABASE_SAVE_DATA_INSTANCE: "true"
+      DATABASE_SAVE_DATA_NEW_MESSAGE: "true"
+      DATABASE_SAVE_MESSAGE_UPDATE: "true"
+      DATABASE_SAVE_DATA_CONTACTS: "true"
+      DATABASE_SAVE_DATA_CHATS: "true"
+      CACHE_REDIS_ENABLED: "true"
+      CACHE_REDIS_URI: redis://:${REDIS_PASSWORD:-redis_secret}@redis:6379/1
+      CACHE_REDIS_PREFIX_KEY: evolution
+      LOG_LEVEL: ERROR
+      LOG_COLOR: "false"
+      DEL_INSTANCE: "false"
+      WEBHOOK_GLOBAL_URL: http://backend:3001/webhooks/evolution
+      WEBHOOK_GLOBAL_ENABLED: "true"
+      WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS: "true"
+      WEBHOOK_EVENTS_MESSAGES_UPSERT: "true"
+      WEBHOOK_EVENTS_CONNECTION_UPDATE: "true"
+      WEBHOOK_EVENTS_QRCODE_UPDATED: "true"
+    volumes:
+      - evolution_data:/evolution/instances
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - zapia_net
+
+  # ─────────────────────────────────────────────
+  # Backend — API Node.js (Fastify)
+  # ─────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: zapia_backend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3011:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://${POSTGRES_USER:-zapia}:${POSTGRES_PASSWORD:-zapia_secret}@postgres:5432/${POSTGRES_DB:-zapia_db}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_secret}@redis:6379/0
+      EVOLUTION_API_URL: http://evolution-api:8080
+      EVOLUTION_API_KEY: ${EVOLUTION_API_KEY:-zapia_evolution_key}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production}
+      APP_URL: ${APP_URL:-https://atendai.ftech-apps.com.br}
+      BACKEND_URL: ${BACKEND_URL:-https://atendai.ftech-apps.com.br}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      evolution-api:
+        condition: service_started
+    networks:
+      - zapia_net
+
+  # ─────────────────────────────────────────────
+  # Dashboard — Next.js Frontend
+  # ─────────────────────────────────────────────
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: zapia_dashboard
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3010:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: ${APP_URL:-https://atendai.ftech-apps.com.br}
+      NEXT_PUBLIC_APP_URL: ${APP_URL:-https://atendai.ftech-apps.com.br}
+      NEXTAUTH_URL: ${APP_URL:-https://atendai.ftech-apps.com.br}
+      NEXTAUTH_SECRET: ${JWT_SECRET:-change_me_in_production}
+    depends_on:
+      - backend
+    networks:
+      - zapia_net
+
+volumes:
+  postgres_data:
+  redis_data:
+  evolution_data:
+
+networks:
+  zapia_net:
+    driver: bridge

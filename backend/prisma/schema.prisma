@@ -1,0 +1,547 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+// ══════════════════════════════════════
+// ENUMS
+// ══════════════════════════════════════
+
+enum UserRole {
+  SUPER_ADMIN
+  TENANT_ADMIN
+  TENANT_AGENT
+}
+
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum InstanceStatus {
+  DISCONNECTED
+  CONNECTING
+  CONNECTED
+  ERROR
+}
+
+enum DocType {
+  PDF
+  URL
+  TEXT
+  FAQ
+}
+
+enum DocStatus {
+  PROCESSING
+  READY
+  ERROR
+}
+
+enum ConversationStatus {
+  AI_ACTIVE
+  ESCALATING
+  HUMAN_ACTIVE
+  RESOLVED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+  INTERNAL_NOTE
+}
+
+enum RepairOrderStatus {
+  TRIAGEM        // Novo contato, coletando modelo e defeito
+  EM_ANALISE     // Aparelho na bancada em diagnóstico
+  AGUARDANDO_PECA // Aguardando chegada de peça
+  EM_CONSERTO    // Reparo em andamento
+  PRONTO         // Conserto finalizado, aguardando retirada
+  ENTREGUE       // Aparelho entregue ao cliente
+  SEM_CONSERTO   // Sem reparo possível / cliente recusou orçamento
+}
+
+enum PhoneCondition {
+  NOVO_LACRADO
+  SEMINOVO_A_PLUS
+  SEMINOVO_A
+  SEMINOVO_B
+  ACESSORIO
+}
+
+enum PhoneCategory {
+  SMARTPHONE
+  TABLET
+  SMARTWATCH
+  ACESSORIO
+  NOTEBOOK
+}
+
+// ══════════════════════════════════════
+// TENANTS (multi-tenant core)
+// ══════════════════════════════════════
+
+model Tenant {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  plan        Plan     @default(FREE)
+  isActive    Boolean  @default(true)
+  apiUsage    Int      @default(0)
+  maxMessages Int      @default(500)   // 500 mensagens grátis no plano Free para teste
+
+  // Relações
+  users             User[]
+  instances         WhatsAppInstance[]
+  aiConfig          AIConfig?
+  knowledgeDocs     KnowledgeDocument[]
+  knowledgeChunks   KnowledgeChunk[]
+  conversations     Conversation[]
+  tags              Tag[]
+  quickReplies      QuickReply[]
+  pipelineStages    PipelineStage[]
+  repairOrders      RepairOrder[]
+  phoneProducts     PhoneProduct[]
+  repairQuotes      RepairQuoteCatalog[]
+  tradeInSims       TradeInSimulation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tenants")
+}
+
+// ══════════════════════════════════════
+// USERS
+// ══════════════════════════════════════
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String?
+  googleId  String?  @unique
+  avatarUrl String?
+  name      String
+  role      UserRole @default(TENANT_AGENT)
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// ══════════════════════════════════════
+// WHATSAPP INSTANCES
+// ══════════════════════════════════════
+
+model WhatsAppInstance {
+  id           String         @id @default(cuid())
+  instanceName String         @unique  // nome usado na Evolution API
+  phoneNumber  String?
+  status       InstanceStatus @default(DISCONNECTED)
+  profileName  String?
+  profilePic   String?
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  conversations Conversation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("whatsapp_instances")
+}
+
+// ══════════════════════════════════════
+// AI CONFIG (por tenant)
+// ══════════════════════════════════════
+
+model AIConfig {
+  id String @id @default(cuid())
+
+  // Persona
+  personaName String @default("Assistente")
+  personaTone String @default("amigável e profissional")
+  language    String @default("pt-BR")
+
+  // LLM
+  llmModel   String @default("openai/gpt-4o-mini")
+  llmApiKey  String?  // key customizada do tenant (opcional)
+  maxTokens  Int    @default(500)
+  temperature Float @default(0.3)
+
+  // Sistema
+  systemPrompt     String? @db.Text
+  fallbackMessage  String  @default("Desculpe, não consegui entender. Pode reformular sua pergunta?")
+  noKnowledgeMsg   String  @default("Não tenho informação sobre este assunto. Posso te conectar com um atendente.")
+
+  // Horário de atendimento (JSON: { start: "08:00", end: "18:00", days: [1,2,3,4,5] })
+  businessHours String? @db.Text
+  outOfHoursMsg String  @default("Estamos fora do horário de atendimento. Retornaremos em breve!")
+
+  // Escalonamento
+  escalationKeywords  String @default("[\"humano\",\"atendente\",\"pessoa\",\"falar com alguem\"]") @db.Text
+  maxAiRetries        Int    @default(3)
+  sentimentEscalation Boolean @default(true)
+
+  // CSAT
+  csatEnabled  Boolean @default(true)
+  csatMessage  String  @default("Como você avalia nosso atendimento hoje? Responda com 1 a 5 ⭐")
+
+  tenantId String @unique
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+
+  @@map("ai_configs")
+}
+
+// ══════════════════════════════════════
+// BASE DE CONHECIMENTO
+// ══════════════════════════════════════
+
+model KnowledgeDocument {
+  id       String    @id @default(cuid())
+  title    String
+  type     DocType
+  content  String?   @db.Text
+  url      String?
+  filename String?
+  fileSize Int?
+  status   DocStatus @default(PROCESSING)
+  chunkCount Int     @default(0)
+  errorMsg String?
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  chunks KnowledgeChunk[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("knowledge_documents")
+}
+
+model KnowledgeChunk {
+  id       String @id @default(cuid())
+  content  String @db.Text
+  metadata Json?
+
+  // pgvector — embedding do chunk (1536 dims = text-embedding-3-small)
+  embedding Unsupported("vector(1536)")?
+
+  tenantId   String
+  tenant     Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  documentId String
+  document   KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+  @@map("knowledge_chunks")
+}
+
+// ══════════════════════════════════════
+// CONVERSATIONS
+// ══════════════════════════════════════
+
+model Conversation {
+  id           String             @id @default(cuid())
+  contactPhone String
+  contactName  String?
+  contactPic   String?
+  status       ConversationStatus @default(AI_ACTIVE)
+  aiRetries    Int                @default(0)
+  csatScore    Int?
+  resolvedAt   DateTime?
+  assignedTo   String?  // userId do agente humano
+
+  tenantId   String
+  tenant     Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  instanceId String
+  instance   WhatsAppInstance @relation(fields: [instanceId], references: [id])
+
+  stageId        String?
+  stage          PipelineStage? @relation(fields: [stageId], references: [id], onDelete: SetNull)
+  tags           ConversationTag[]
+  estimatedValue Float?
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, status])
+  @@index([tenantId, contactPhone])
+  @@map("conversations")
+}
+
+// ══════════════════════════════════════
+// MESSAGES
+// ══════════════════════════════════════
+
+model Message {
+  id       String      @id @default(cuid())
+  role     MessageRole
+  content  String      @db.Text
+  mediaType String?
+  mediaUrl  String?
+  isFromWhatsApp Boolean @default(false)
+  evolutionMsgId String?
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId])
+  @@map("messages")
+}
+
+// ══════════════════════════════════════
+// RESPOSTAS RÁPIDAS (CANNED RESPONSES)
+// ══════════════════════════════════════
+
+model QuickReply {
+  id       String @id @default(cuid())
+  shortcut String // ex: "/pix", "/horario"
+  title    String
+  content  String @db.Text
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, shortcut])
+  @@map("quick_replies")
+}
+
+// ══════════════════════════════════════
+// TAGS & CLASSIFICAÇÃO
+// ══════════════════════════════════════
+
+model Tag {
+  id       String @id @default(cuid())
+  name     String
+  color    String @default("#10B981") // Hex color
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  conversations ConversationTag[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([tenantId, name])
+  @@map("tags")
+}
+
+model ConversationTag {
+  id             String @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  tagId          String
+  tag            Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([conversationId, tagId])
+  @@map("conversation_tags")
+}
+
+// ══════════════════════════════════════
+// CRM KANBAN / PIPELINE
+// ══════════════════════════════════════
+
+model PipelineStage {
+  id       String @id @default(cuid())
+  name     String // Ex: "Novo Lead", "Em Atendimento IA", "Proposta", "Fechado"
+  order    Int    @default(0)
+  color    String @default("#3B82F6")
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  conversations Conversation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pipeline_stages")
+}
+
+// ══════════════════════════════════════
+// ORDENS DE SERVIÇO — BANCADA TÉCNICA
+// ══════════════════════════════════════
+
+model RepairOrder {
+  id              String            @id @default(cuid())
+  orderNumber     String            // Ex: "OS-1001" gerado automaticamente
+  status          RepairOrderStatus @default(TRIAGEM)
+
+  // Cliente
+  customerName    String
+  customerPhone   String
+
+  // Aparelho
+  deviceBrand     String            // Ex: Apple, Samsung, Xiaomi
+  deviceModel     String            // Ex: iPhone 13, Galaxy A54
+  deviceColor     String?           // Ex: Preto, Azul
+  deviceImei      String?           // IMEI do aparelho
+  devicePassword  String?           // Senha/Pin para testes técnicos
+
+  // Atendimento
+  reportedDefect  String  @db.Text  // Defeito relatado pelo cliente
+  technicalDiagnosis String? @db.Text // Diagnóstico do técnico
+  technicalNotes  String? @db.Text  // Observações internas do técnico
+
+  // Financeiro
+  partsCost       Float?            // Custo das peças
+  laborCost       Float?            // Mão de obra
+  totalAmount     Float?            // Total do orçamento
+  approvedAt      DateTime?         // Quando o cliente aprovou o orçamento
+  paidAt          DateTime?         // Quando foi pago
+
+  // Prazos
+  warrantyDays    Int    @default(90) // Garantia em dias
+  estimatedDelivery DateTime?        // Previsão de entrega
+  deliveredAt     DateTime?          // Data de entrega real
+
+  // Notificações WhatsApp
+  notifiedReady   Boolean @default(false) // Se enviou notificação de pronto
+  whatsappMsgId   String?                 // ID da mensagem de notificação
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, status])
+  @@index([tenantId, customerPhone])
+  @@unique([tenantId, orderNumber])
+  @@map("repair_orders")
+}
+
+// ══════════════════════════════════════
+// CATÁLOGO DE CELULARES & ACESSÓRIOS
+// ══════════════════════════════════════
+
+model PhoneProduct {
+  id               String         @id @default(cuid())
+  title            String         // Nome do produto para exibição
+  brand            String         // Apple, Samsung, Motorola, Xiaomi, etc.
+  model            String         // iPhone 13, Galaxy S23, Redmi Note 13
+  category         PhoneCategory  @default(SMARTPHONE)
+  condition        PhoneCondition @default(SEMINOVO_A_PLUS)
+
+  // Especificações
+  storage          String?        // 128GB, 256GB, 512GB
+  color            String?        // Cor do aparelho
+  batteryHealth    Int?           // Saúde da bateria em % (ex: 89)
+  ram              String?        // 8GB, 12GB (opcional)
+
+  // Preços
+  cashPrice        Float          // Preço à vista / Pix
+  installmentPrice Float?         // Preço no cartão parcelado (12x)
+  installments     Int    @default(12) // Número de parcelas
+
+  // Estoque
+  stock            Int    @default(0)
+  isAvailable      Boolean @default(true)
+
+  // Imagens e Detalhes
+  imageUrl         String?   // Foto principal
+  imageUrls        String?   @db.Text // JSON array de fotos adicionais
+  description      String?   @db.Text
+  warrantyMonths   Int       @default(3) // Garantia da loja em meses
+  isFeatured       Boolean   @default(false) // Destaque no catálogo
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, brand])
+  @@index([tenantId, category, condition])
+  @@map("phone_products")
+}
+
+// ══════════════════════════════════════
+// TABELA DE ORÇAMENTOS DE REFERÊNCIA
+// ══════════════════════════════════════
+
+model RepairQuoteCatalog {
+  id           String @id @default(cuid())
+  brand        String  // Ex: Apple, Samsung, Motorola
+  modelPattern String  // Ex: "iPhone 13", "Galaxy A54", ou "*" para todos
+  serviceType  String  // Ex: "Tela Original", "Bateria", "Conector Carga", "Desoxidação"
+  priceMin     Float   // Preço mínimo estimado
+  priceMax     Float   // Preço máximo estimado
+  averageTime  String  // Tempo médio de execução, ex: "30 min", "1 hora", "2 dias úteis"
+  warrantyDays Int     @default(90)
+  notes        String? @db.Text // Observações técnicas
+  isActive     Boolean @default(true)
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, brand])
+  @@map("repair_quote_catalog")
+}
+
+// ══════════════════════════════════════
+// SIMULAÇÕES DE TRADE-IN (AVALIAÇÃO DE USADO)
+// ══════════════════════════════════════
+
+model TradeInSimulation {
+  id            String @id @default(cuid())
+
+  // Aparelho avaliado
+  brand         String
+  model         String
+  storage       String?        // 64GB, 128GB, etc.
+  batteryHealth Int?           // % de saúde da bateria
+  condition     String         // "Excelente", "Bom", "Regular", "Com defeito"
+  hasBox        Boolean @default(false)
+  hasCharger    Boolean @default(false)
+
+  // Avaliação calculada
+  estimatedMin  Float          // Valor mínimo de avaliação
+  estimatedMax  Float          // Valor máximo de avaliação
+
+  // Contexto (opcional)
+  customerPhone String?        // Telefone do cliente
+  conversationId String?       // Conversa WhatsApp de origem
+  accepted      Boolean @default(false) // Se o cliente aceitou a avaliação
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+  @@map("trade_in_simulations")
+}

@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ─────────────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-0 box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-surface-950 text-white font-sans;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track { @apply bg-surface-900; }
+  ::-webkit-scrollbar-thumb { @apply bg-surface-500 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-brand-500; }
+}
+
+/* ─── Components ────────────────────────────────────────────────────────────── */
+@layer components {
+  /* Glass card */
+  .card {
+    @apply bg-glass border border-white/[0.06] rounded-2xl shadow-glass backdrop-blur-sm;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-gradient-brand text-white font-semibold px-5 py-2.5 rounded-xl
+           hover:opacity-90 active:scale-95 transition-all duration-150
+           shadow-glow-sm hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-surface-700 border border-white/[0.07] text-white font-medium px-5 py-2.5 rounded-xl
+           hover:bg-surface-600 active:scale-95 transition-all duration-150;
+  }
+
+  .btn-ghost {
+    @apply text-white/60 font-medium px-3 py-2 rounded-lg
+           hover:text-white hover:bg-surface-700 transition-all duration-150;
+  }
+
+  /* ─── Efeito Exato Asimov: Raio de Luz Giratório em Volta do Botão & Sombra ── */
+  @keyframes button-glow-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  .button-glow {
+    appearance: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05)
+    );
+    border: 0;
+    border-radius: 9999px;
+    box-shadow: 
+      0 0 25px rgba(94, 234, 212, 0.35),
+      0 8px 40px rgba(94, 234, 212, 0.2);
+    cursor: pointer;
+    display: inline-flex;
+    isolation: isolate;
+    max-width: max-content;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .button-glow:hover {
+    box-shadow: 0 0 50px 12px rgba(94, 234, 212, 0.5);
+    transform: scale(1.05);
+  }
+
+  .button-glow:focus-visible {
+    box-shadow: 0 0 50px 12px rgba(94, 234, 212, 0.5);
+    outline: none;
+  }
+
+  .button-glow__border {
+    border-radius: inherit;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .button-glow__border-spin {
+    animation: button-glow-spin 3s linear infinite;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      transparent 80deg,
+      rgba(94, 234, 212, 0.9) 180deg,
+      transparent 280deg,
+      transparent 1turn
+    );
+    height: 300%;
+    width: 300%;
+    inset: -100%;
+    left: -100%;
+    top: -100%;
+    position: absolute;
+  }
+
+  .button-glow__inner {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    background: rgba(10, 15, 12, 0.95);
+    border-radius: inherit;
+    inset: 1px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+  }
+
+  .button-glow__content {
+    align-items: center;
+    color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    gap: 14px;
+    padding: 12px 22px 12px 16px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .button-glow:hover .button-glow__content {
+    color: #fff;
+  }
+
+  .button-glow__icon {
+    align-items: center;
+    background: linear-gradient(to bottom, #2dd4bf, #0d9488);
+    border-radius: 9999px;
+    box-shadow: 
+      0 10px 15px -3px rgba(94, 234, 212, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-shrink: 0;
+    height: 28px;
+    width: 28px;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.3s ease;
+    z-index: 20;
+  }
+
+  .button-glow:hover .button-glow__icon {
+    transform: scale(1.1);
+  }
+
+  .button-glow__label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    position: relative;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  .button-glow__arrow {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.8);
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 24px;
+    width: 24px;
+    justify-content: center;
+    margin-left: 4px;
+    position: relative;
+    transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+    z-index: 10;
+  }
+
+  .button-glow:hover .button-glow__arrow {
+    color: #fff;
+    background: rgba(45, 212, 191, 0.25);
+    transform: translateX(2px);
+  }
+
+  .btn-danger {
+    @apply bg-red-500/10 border border-red-500/20 text-red-400 font-medium px-5 py-2.5 rounded-xl
+           hover:bg-red-500/20 active:scale-95 transition-all duration-150;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full bg-surface-700 border border-white/[0.07] text-white placeholder-white/30
+           rounded-xl px-4 py-3 text-sm outline-none
+           focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30
+           transition-all duration-150;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-white/70 mb-1.5;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-green  { @apply badge bg-brand-500/15 text-brand-400; }
+  .badge-yellow { @apply badge bg-yellow-500/15 text-yellow-400; }
+  .badge-red    { @apply badge bg-red-500/15 text-red-400; }
+  .badge-blue   { @apply badge bg-blue-500/15 text-blue-400; }
+  .badge-gray   { @apply badge bg-white/10 text-white/50; }
+
+  /* Stat card */
+  .stat-card {
+    @apply card p-5 flex flex-col gap-3;
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+           text-white/50 hover:text-white hover:bg-surface-700 
+           transition-all duration-150 cursor-pointer;
+  }
+  .nav-item.active {
+    @apply text-white bg-brand-500/10 border border-brand-500/20;
+  }
+
+  /* Status dot */
+  .status-dot {
+    @apply w-2 h-2 rounded-full inline-block;
+  }
+  .status-dot.connected    { @apply bg-brand-400 shadow-[0_0_6px_rgba(37,164,94,0.8)]; }
+  .status-dot.disconnected { @apply bg-red-400; }
+  .status-dot.connecting   { @apply bg-yellow-400 animate-pulse; }
+
+  /* Glow text */
+  .text-glow {
+    text-shadow: 0 0 20px rgba(37, 164, 94, 0.5);
+  }
+
+  /* Message bubble */
+  .msg-user {
+    @apply bg-surface-700 border border-white/[0.05] rounded-2xl rounded-bl-sm px-4 py-2.5 max-w-xs text-sm;
+  }
+  .msg-bot {
+    @apply bg-brand-500/10 border border-brand-500/20 rounded-2xl rounded-br-sm px-4 py-2.5 max-w-xs text-sm text-brand-100;
+  }
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────────── */
+@layer utilities {
+  .gradient-text {
+    @apply bg-gradient-to-r from-brand-400 via-emerald-300 to-cyan-400 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-cyan {
+    @apply bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent;
+  }
+
+  .border-subtle {
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+  }
+
+  .bg-grid-white {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-grid-lines {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+
+  .mask-radial {
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
+  }
+
+  .shimmer-badge {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+  }
+}
