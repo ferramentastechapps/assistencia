@@ -6,7 +6,7 @@ import { config } from '../../config'
 export function createLLM(model?: string, tenantApiKey?: string) {
   return new ChatOpenAI({
     modelName: model || config.openrouter.defaultModel,
-    openAIApiKey: tenantApiKey || config.openrouter.apiKey,
+    openAIApiKey: tenantApiKey || config.openrouter.apiKey || 'sk-dummy-key',
     configuration: {
       baseURL: config.openrouter.baseUrl,
       defaultHeaders: {
@@ -24,7 +24,7 @@ export function createLLM(model?: string, tenantApiKey?: string) {
 export function createEmbeddings() {
   return new OpenAIEmbeddings({
     modelName: 'text-embedding-3-small',
-    openAIApiKey: config.openrouter.apiKey,
+    openAIApiKey: config.openrouter.apiKey || 'sk-dummy-key',
     configuration: {
       baseURL: config.openrouter.baseUrl,
       defaultHeaders: {

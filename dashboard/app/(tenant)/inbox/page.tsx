@@ -310,23 +310,23 @@ export default function InboxPage() {
   )
 
   return (
-    <div className="flex h-full animate-fade-in bg-surface-950 text-white select-none">
+    <div className="flex h-full animate-fade-in bg-[#E5E3DC] text-[#1C1D21] select-none">
       {/* ─── Sidebar: Lista de Conversas ────────────────────────────────────────── */}
-      <div className="w-80 flex-shrink-0 border-r border-white/[0.08] flex flex-col bg-surface-900/50 backdrop-blur-md">
+      <div className="w-80 flex-shrink-0 border-r border-black/[0.06] flex flex-col bg-[#EAE8E1]/90 backdrop-blur-md">
         {/* Header do Inbox com Filtros */}
-        <div className="p-4 border-b border-white/[0.08] space-y-3">
+        <div className="p-4 border-b border-black/[0.06] space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="font-bold text-base flex items-center gap-2">
-              <MessageSquare size={18} className="text-brand-400" />
+            <h2 className="font-extrabold text-base flex items-center gap-2 text-[#18191B]">
+              <MessageSquare size={18} className="text-[#F5C518]" />
               Inbox Pro
             </h2>
-            <span className="text-xs bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full font-medium">
+            <span className="text-xs bg-[#18191B] text-white px-2.5 py-0.5 rounded-full font-bold shadow-sm">
               {conversations.length} chats
             </span>
           </div>
 
           {/* Abas de Filtro de Status */}
-          <div className="flex bg-surface-800/80 p-0.5 rounded-lg text-xs font-medium border border-white/[0.06]">
+          <div className="flex bg-[#DDD9CE] p-1 rounded-full text-xs font-semibold border border-black/[0.04]">
             {[
               { id: 'ALL', label: 'Todos' },
               { id: 'HUMAN_ACTIVE', label: 'Humano' },
@@ -338,9 +338,9 @@ export default function InboxPage() {
                   setFilterStatus(tab.id)
                   loadConversations()
                 }}
-                className={clsx('flex-1 py-1.5 rounded-md transition-all text-center', {
-                  'bg-brand-500 text-white shadow-glow-sm font-semibold': filterStatus === tab.id,
-                  'text-white/50 hover:text-white': filterStatus !== tab.id
+                className={clsx('flex-1 py-1.5 rounded-full transition-all text-center', {
+                  'bg-white text-[#18191B] shadow-tactile-pill font-extrabold': filterStatus === tab.id,
+                  'text-[#555962] hover:text-[#18191B]': filterStatus !== tab.id
                 })}
               >
                 {tab.label}
@@ -353,9 +353,9 @@ export default function InboxPage() {
         <div className="flex-1 overflow-y-auto scrollbar-thin">
           {conversations.length === 0 ? (
             <div className="p-8 text-center">
-              <Users size={32} className="text-white/20 mx-auto mb-3" />
-              <p className="text-sm text-white/40">Nenhuma conversa encontrada</p>
-              <p className="text-xs text-white/25 mt-1">A IA está monitorando novas mensagens!</p>
+              <Users size={32} className="text-[#888C95] mx-auto mb-3" />
+              <p className="text-sm text-[#787C87] font-semibold">Nenhuma conversa encontrada</p>
+              <p className="text-xs text-[#888C95] mt-1">A IA está monitorando novas mensagens!</p>
             </div>
           ) : (
             conversations.map(conv => {
@@ -367,42 +367,42 @@ export default function InboxPage() {
                   key={conv.id}
                   onClick={() => selectConversation(conv)}
                   className={clsx(
-                    'w-full text-left px-4 py-3.5 border-b border-white/[0.04] transition-all relative',
+                    'w-full text-left px-4 py-3.5 border-b border-black/[0.04] transition-all relative',
                     {
-                      'bg-surface-800/90 border-l-4 border-l-brand-500': isSelected,
-                      'hover:bg-surface-800/40': !isSelected
+                      'bg-white border-l-4 border-l-[#18191B] shadow-tactile-pill': isSelected,
+                      'hover:bg-white/60': !isSelected
                     }
                   )}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-[#18191B] text-[#F5C518] flex items-center justify-center text-xs font-black flex-shrink-0 shadow-sm">
                       {(conv.contactName || conv.contactPhone)[0].toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-sm truncate">
+                        <span className="font-extrabold text-sm text-[#18191B] truncate">
                           {conv.contactName || conv.contactPhone}
                         </span>
-                        <span className="text-[11px] text-white/30">
+                        <span className="text-[11px] text-[#888C95] font-semibold">
                           {format(new Date(conv.updatedAt), 'HH:mm')}
                         </span>
                       </div>
 
                       {/* Mensagem prévia */}
-                      <p className="text-xs text-white/40 truncate mt-1 flex items-center gap-1">
-                        {isAudio && <Mic size={12} className="text-brand-400 flex-shrink-0" />}
+                      <p className="text-xs text-[#555962] truncate mt-1 flex items-center gap-1 font-medium">
+                        {isAudio && <Mic size={12} className="text-[#18191B] flex-shrink-0" />}
                         {lastMsg?.content || 'Iniciando conversa...'}
                       </p>
 
                       {/* Badges de Tags e Status */}
                       <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                         <span
-                          className={clsx('text-[10px] px-1.5 py-0.5 rounded font-medium', {
-                            'bg-amber-500/20 text-amber-300 border border-amber-500/30':
+                          className={clsx('text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm', {
+                            'bg-[#FEF9C3] text-[#854D0E] border border-[#FDE047]/60':
                               conv.status === 'HUMAN_ACTIVE',
-                            'bg-brand-500/20 text-brand-300 border border-brand-500/30':
+                            'bg-[#18191B] text-white':
                               conv.status === 'AI_ACTIVE',
-                            'bg-surface-700 text-white/40': conv.status === 'RESOLVED'
+                            'bg-[#EFECE4] text-[#787C87]': conv.status === 'RESOLVED'
                           })}
                         >
                           {conv.status === 'HUMAN_ACTIVE' ? 'Aguardando Atendente' : 'IA Ativa'}
@@ -410,12 +410,7 @@ export default function InboxPage() {
 
                         {conv.stage && (
                           <span
-                            className="text-[10px] px-1.5 py-0.5 rounded font-medium text-white border"
-                            style={{
-                              backgroundColor: `${conv.stage.color}20`,
-                              borderColor: `${conv.stage.color}40`,
-                              color: conv.stage.color
-                            }}
+                            className="text-[10px] px-2 py-0.5 rounded-full font-bold text-[#18191B] bg-white border border-black/[0.04] shadow-sm"
                           >
                             {conv.stage.name}
                           </span>
@@ -424,8 +419,8 @@ export default function InboxPage() {
                         {conv.tags?.slice(0, 2).map(t => (
                           <span
                             key={t.tagId}
-                            className="text-[9px] px-1.5 py-0.2 rounded-full"
-                            style={{ backgroundColor: `${t.tag.color}30`, color: t.tag.color }}
+                            className="text-[9px] px-2 py-0.2 rounded-full font-semibold"
+                            style={{ backgroundColor: `${t.tag.color}25`, color: '#18191B' }}
                           >
                             {t.tag.name}
                           </span>
@@ -442,10 +437,10 @@ export default function InboxPage() {
 
       {/* ─── Área Principal de Atendimento (Chat Area) ───────────────────────── */}
       {selected ? (
-        <div className="flex-1 flex flex-col bg-surface-950 relative overflow-hidden">
+        <div className="flex-1 flex flex-col bg-[#E5E3DC] relative overflow-hidden">
           {/* Alerta de Detecção de Colisão entre Atendentes */}
           {otherViewer && (
-            <div className="bg-amber-500/15 border-b border-amber-500/30 px-6 py-2 flex items-center gap-2 text-amber-300 text-xs font-medium animate-slide-down">
+            <div className="bg-[#FEF9C3] border-b border-[#FDE047] px-6 py-2 flex items-center gap-2 text-[#854D0E] text-xs font-bold animate-slide-down">
               <AlertTriangle size={14} className="animate-pulse" />
               <span>
                 <strong>{otherViewer}</strong> também está visualizando esta conversa neste momento!
@@ -454,17 +449,17 @@ export default function InboxPage() {
           )}
 
           {/* Header da Conversa */}
-          <div className="px-6 py-3.5 border-b border-white/[0.08] flex items-center justify-between bg-surface-900/40 backdrop-blur-md">
+          <div className="px-6 py-3.5 border-b border-black/[0.06] flex items-center justify-between bg-white shadow-tactile-pill">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-brand flex items-center justify-center text-sm font-bold shadow-md">
+              <div className="w-10 h-10 rounded-full bg-[#18191B] text-[#F5C518] flex items-center justify-center text-sm font-extrabold shadow-sm">
                 {(selected.contactName || selected.contactPhone)[0].toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-sm">
+                  <h3 className="font-extrabold text-sm text-[#18191B]">
                     {selected.contactName || selected.contactPhone}
                   </h3>
-                  <span className="text-xs text-white/30">{selected.contactPhone}</span>
+                  <span className="text-xs text-[#787C87] font-semibold">{selected.contactPhone}</span>
                 </div>
 
                 {/* Seletor de Estágio do Funil + Tags */}
@@ -473,7 +468,7 @@ export default function InboxPage() {
                   <select
                     value={selected.stageId || ''}
                     onChange={e => changeStage(e.target.value)}
-                    className="bg-surface-800 text-white/70 text-[11px] px-2 py-0.5 rounded border border-white/[0.08] focus:border-brand-500 outline-none cursor-pointer"
+                    className="bg-[#EFECE4] text-[#18191B] text-[11px] px-2.5 py-0.5 rounded-full border border-black/[0.06] focus:border-[#18191B] outline-none cursor-pointer font-semibold"
                   >
                     <option value="">Sem Estágio</option>
                     {stages.map(s => (
@@ -488,8 +483,7 @@ export default function InboxPage() {
                     {selected.tags?.map(t => (
                       <span
                         key={t.tagId}
-                        className="text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1"
-                        style={{ backgroundColor: `${t.tag.color}30`, color: t.tag.color }}
+                        className="text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 font-semibold bg-[#EFECE4] text-[#18191B]"
                       >
                         {t.tag.name}
                         <button
@@ -502,7 +496,7 @@ export default function InboxPage() {
                     ))}
                     <button
                       onClick={() => setShowTagPicker(!showTagPicker)}
-                      className="text-[10px] bg-surface-800 hover:bg-surface-700 text-white/50 hover:text-white px-2 py-0.5 rounded-full flex items-center gap-1 border border-white/[0.08]"
+                      className="text-[10px] bg-[#EFECE4] hover:bg-white text-[#555962] hover:text-[#18191B] px-2.5 py-0.5 rounded-full flex items-center gap-1 border border-black/[0.04] font-semibold"
                     >
                       <Plus size={10} /> Tag
                     </button>
@@ -515,27 +509,27 @@ export default function InboxPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={returnToAI}
-                className="btn-secondary flex items-center gap-1.5 text-xs py-1.5 px-3"
+                className="btn-secondary flex items-center gap-1.5 text-xs py-1.5 px-3.5 font-bold"
               >
                 <ArrowLeftRight size={13} /> Devolver para IA
               </button>
               <button
                 onClick={resolve}
-                className="btn-primary flex items-center gap-1.5 text-xs py-1.5 px-3.5"
+                className="btn-primary flex items-center gap-1.5 text-xs py-1.5 px-4 font-bold"
               >
-                <CheckCircle2 size={13} /> Resolver
+                <CheckCircle2 size={13} className="text-[#F5C518]" /> Resolver
               </button>
             </div>
           </div>
 
           {/* Modal / Popover de Tags */}
           {showTagPicker && (
-            <div className="absolute top-16 right-6 z-30 w-64 card p-4 shadow-xl border border-white/10 space-y-3 animate-slide-down">
+            <div className="absolute top-16 right-6 z-30 w-64 card !p-4 shadow-tablet-kiosk space-y-3 animate-slide-down">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-white/70">Gerenciar Tags</span>
+                <span className="text-xs font-bold text-[#18191B]">Gerenciar Tags</span>
                 <button
                   onClick={() => setShowTagPicker(false)}
-                  className="text-white/30 hover:text-white"
+                  className="text-[#888C95] hover:text-[#18191B]"
                 >
                   <X size={14} />
                 </button>
@@ -549,8 +543,8 @@ export default function InboxPage() {
                       key={tag.id}
                       onClick={() => toggleTag(tag)}
                       className={clsx(
-                        'w-full text-left px-2.5 py-1.5 rounded text-xs flex items-center justify-between transition-colors',
-                        isChecked ? 'bg-surface-700 font-medium' : 'hover:bg-surface-800'
+                        'w-full text-left px-2.5 py-1.5 rounded-full text-xs flex items-center justify-between transition-colors',
+                        isChecked ? 'bg-[#18191B] text-white font-semibold' : 'hover:bg-[#EFECE4] text-[#18191B]'
                       )}
                     >
                       <span className="flex items-center gap-2">
@@ -560,16 +554,16 @@ export default function InboxPage() {
                         />
                         {tag.name}
                       </span>
-                      {isChecked && <CheckCircle2 size={12} className="text-brand-400" />}
+                      {isChecked && <CheckCircle2 size={12} className="text-[#F5C518]" />}
                     </button>
                   )
                 })}
               </div>
 
               {/* Criar nova tag */}
-              <div className="flex gap-1.5 pt-2 border-t border-white/[0.06]">
+              <div className="flex gap-1.5 pt-2 border-t border-black/[0.06]">
                 <input
-                  className="input text-xs py-1 px-2 flex-1"
+                  className="input text-xs py-1.5 px-3 flex-1"
                   placeholder="Nova tag..."
                   value={newTagName}
                   onChange={e => setNewTagName(e.target.value)}
@@ -578,7 +572,7 @@ export default function InboxPage() {
                 <button
                   onClick={createTag}
                   disabled={!newTagName.trim()}
-                  className="btn-primary text-xs px-2.5 py-1"
+                  className="btn-primary text-xs px-3 py-1"
                 >
                   <Plus size={13} />
                 </button>
@@ -596,16 +590,16 @@ export default function InboxPage() {
               if (isNote) {
                 return (
                   <div key={msg.id} className="flex justify-center my-3">
-                    <div className="max-w-md w-full bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-amber-200 text-xs space-y-1 shadow-sm">
-                      <div className="flex items-center justify-between font-semibold text-amber-300">
+                    <div className="max-w-md w-full bg-[#FEF9C3] border border-[#FDE047] rounded-2xl p-3.5 text-[#854D0E] text-xs space-y-1 shadow-sm">
+                      <div className="flex items-center justify-between font-bold">
                         <span className="flex items-center gap-1.5">
-                          <Lock size={12} /> Nota Interna (Privada)
+                          <Lock size={12} /> Nota Interna da Oficina
                         </span>
-                        <span className="text-[10px] opacity-60">
+                        <span className="text-[10px] opacity-70 font-semibold">
                           {format(new Date(msg.createdAt), 'HH:mm')}
                         </span>
                       </div>
-                      <p className="leading-relaxed text-amber-100/90">{msg.content}</p>
+                      <p className="leading-relaxed font-medium">{msg.content}</p>
                     </div>
                   </div>
                 )
@@ -620,34 +614,37 @@ export default function InboxPage() {
                   })}
                 >
                   {isUser && (
-                    <div className="w-8 h-8 rounded-full bg-surface-700 flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
-                      <User size={14} className="text-white/60" />
+                    <div className="w-8 h-8 rounded-full bg-[#DDD9CE] flex items-center justify-center flex-shrink-0 mt-1 shadow-sm text-[#18191B]">
+                      <User size={14} />
                     </div>
                   )}
 
                   <div
-                    className={clsx('max-w-[70%] rounded-2xl px-4 py-3 shadow-md', {
-                      'bg-surface-800 text-white rounded-tl-sm border border-white/[0.06]': isUser,
-                      'bg-brand-600 text-white rounded-tr-sm': !isUser
+                    className={clsx('max-w-[70%] rounded-3xl px-5 py-3.5 shadow-sm', {
+                      'bg-white text-[#18191B] rounded-tl-sm border border-black/[0.04]': isUser,
+                      'bg-[#18191B] text-white rounded-tr-sm shadow-tactile-dark': !isUser
                     })}
                   >
                     {isAudio && (
-                      <div className="flex items-center gap-2 mb-1.5 text-xs text-brand-300 font-medium">
+                      <div className="flex items-center gap-2 mb-1.5 text-xs text-[#F5C518] font-bold">
                         <Mic size={14} className="animate-pulse" />
                         <span>Mensagem de Áudio Transcrita</span>
                       </div>
                     )}
 
-                    <p className="leading-relaxed text-sm whitespace-pre-wrap">{msg.content}</p>
+                    <p className="leading-relaxed text-sm whitespace-pre-wrap font-medium">{msg.content}</p>
 
-                    <div className="text-[10px] opacity-40 mt-1.5 text-right font-mono">
+                    <div className={clsx('text-[10px] mt-1.5 text-right font-mono', {
+                      'text-[#888C95]': isUser,
+                      'text-white/40': !isUser
+                    })}>
                       {format(new Date(msg.createdAt), 'HH:mm')}
                     </div>
                   </div>
 
                   {!isUser && (
-                    <div className="w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
-                      <Bot size={15} className="text-brand-400" />
+                    <div className="w-8 h-8 rounded-full bg-[#18191B] text-[#F5C518] flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
+                      <Bot size={15} />
                     </div>
                   )}
                 </div>
@@ -658,25 +655,25 @@ export default function InboxPage() {
 
           {/* Popover de Respostas Rápidas (quando digita '/') */}
           {showQuickPopover && filteredQuickReplies.length > 0 && (
-            <div className="absolute bottom-20 left-8 right-8 max-w-lg bg-surface-800 border border-white/15 rounded-xl shadow-2xl p-2 z-20 animate-slide-up">
-              <div className="text-[11px] font-semibold text-white/50 px-2 py-1 mb-1 flex items-center gap-1.5">
-                <Zap size={12} className="text-amber-400" /> Respostas Rápidas (Selecione para preencher)
+            <div className="absolute bottom-20 left-8 right-8 max-w-lg card !p-3 shadow-tablet-kiosk z-20 animate-slide-up">
+              <div className="text-[11px] font-bold text-[#888C95] px-2 py-1 mb-1 flex items-center gap-1.5">
+                <Zap size={12} className="text-[#F5C518]" /> Respostas Rápidas (Selecione para preencher)
               </div>
               <div className="space-y-1 max-h-48 overflow-y-auto scrollbar-thin">
                 {filteredQuickReplies.map(reply => (
                   <button
                     key={reply.id}
                     onClick={() => selectQuickReply(reply)}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-700 transition-colors flex items-center justify-between group"
+                    className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#EFECE4] transition-colors flex items-center justify-between group"
                   >
                     <div>
-                      <span className="text-xs font-semibold text-brand-400 group-hover:text-brand-300">
+                      <span className="text-xs font-bold text-[#18191B] group-hover:underline">
                         {reply.shortcut}
                       </span>
-                      <span className="text-xs text-white/70 ml-2">{reply.title}</span>
-                      <p className="text-[11px] text-white/40 truncate max-w-sm">{reply.content}</p>
+                      <span className="text-xs text-[#555962] ml-2 font-medium">{reply.title}</span>
+                      <p className="text-[11px] text-[#787C87] truncate max-w-sm">{reply.content}</p>
                     </div>
-                    <span className="text-[10px] text-white/20 group-hover:text-white/60">Enter ↵</span>
+                    <span className="text-[10px] text-[#888C95]">Enter ↵</span>
                   </button>
                 ))}
               </div>
@@ -684,37 +681,37 @@ export default function InboxPage() {
           )}
 
           {/* Barra de Entrada / Envio */}
-          <div className="px-8 py-4 border-t border-white/[0.08] bg-surface-900/60 backdrop-blur-md space-y-2">
+          <div className="px-8 py-4 border-t border-black/[0.06] bg-white shadow-sm space-y-2.5">
             {/* Seletor de Modo: WhatsApp vs Nota Interna */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setIsInternalNote(false)}
                 className={clsx(
-                  'px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all',
+                  'px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm',
                   !isInternalNote
-                    ? 'bg-brand-500 text-white shadow-glow-sm'
-                    : 'bg-surface-800 text-white/40 hover:text-white'
+                    ? 'bg-[#18191B] text-white shadow-tactile-dark'
+                    : 'bg-[#EFECE4] text-[#555962] hover:text-[#18191B]'
                 )}
               >
-                <Send size={12} /> Resposta WhatsApp
+                <Send size={12} className={!isInternalNote ? 'text-[#F5C518]' : ''} /> Resposta WhatsApp
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsInternalNote(true)}
                 className={clsx(
-                  'px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all',
+                  'px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm',
                   isInternalNote
-                    ? 'bg-amber-500 text-black font-semibold shadow-md'
-                    : 'bg-surface-800 text-white/40 hover:text-white'
+                    ? 'bg-[#F5C518] text-[#18191B] shadow-tactile-pill'
+                    : 'bg-[#EFECE4] text-[#555962] hover:text-[#18191B]'
                 )}
               >
                 <Lock size={12} /> Nota Interna (Privada)
               </button>
 
-              <span className="text-[11px] text-white/30 ml-auto">
-                Dica: Digite <kbd className="bg-surface-800 px-1.5 py-0.5 rounded border border-white/10 text-white/70">/</kbd> para respostas rápidas
+              <span className="text-[11px] text-[#888C95] ml-auto font-medium">
+                Dica: Digite <kbd className="bg-[#EFECE4] px-1.5 py-0.5 rounded-md border border-black/[0.06] text-[#18191B] font-bold">/</kbd> para respostas rápidas
               </span>
             </div>
 
@@ -722,9 +719,9 @@ export default function InboxPage() {
             <div className="flex gap-3">
               <input
                 className={clsx(
-                  'input flex-1 text-sm py-3 px-4 transition-all',
+                  'input flex-1 text-sm py-3 px-5 transition-all',
                   isInternalNote &&
-                    'border-amber-500/50 bg-amber-500/5 text-amber-100 placeholder-amber-300/40 focus:border-amber-400'
+                    'border-[#FDE047] bg-[#FEF9C3]/50 text-[#854D0E] placeholder-[#854D0E]/60 focus:border-[#F5C518]'
                 )}
                 placeholder={
                   isInternalNote
@@ -739,26 +736,26 @@ export default function InboxPage() {
                 onClick={sendMessage}
                 disabled={sending || !message.trim()}
                 className={clsx(
-                  'px-5 rounded-xl font-medium text-sm flex items-center justify-center transition-all',
+                  'px-6 rounded-full font-bold text-sm flex items-center justify-center transition-all shadow-tactile-dark',
                   isInternalNote
-                    ? 'bg-amber-500 hover:bg-amber-400 text-black font-semibold'
+                    ? 'bg-[#F5C518] hover:bg-[#FFE033] text-[#18191B]'
                     : 'btn-primary'
                 )}
               >
-                {isInternalNote ? <Lock size={16} /> : <Send size={16} />}
+                {isInternalNote ? <Lock size={16} /> : <Send size={16} className="text-[#F5C518]" />}
               </button>
             </div>
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex items-center justify-center bg-surface-950">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-3xl bg-surface-800 border border-white/[0.08] flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <Bot size={30} className="text-brand-400/60" />
+        <div className="flex-1 flex items-center justify-center bg-[#E5E3DC]">
+          <div className="text-center card !p-8 max-w-sm rounded-[32px] shadow-tactile-card">
+            <div className="w-16 h-16 rounded-3xl bg-[#18191B] text-[#F5C518] flex items-center justify-center mx-auto mb-4 shadow-tactile-dark">
+              <Bot size={30} />
             </div>
-            <h3 className="font-semibold text-white/70 text-base">Selecione uma conversa</h3>
-            <p className="text-sm text-white/30 mt-1 max-w-xs">
-              Escolha um chat ao lado para atender em tempo real, inserir notas internas ou gerenciar o lead.
+            <h3 className="font-extrabold text-[#18191B] text-base">Selecione uma conversa</h3>
+            <p className="text-xs text-[#787C87] mt-1.5 font-medium leading-relaxed">
+              Escolha um cliente na coluna lateral para acompanhar o atendimento em tempo real ou enviar respostas rápidas.
             </p>
           </div>
         </div>

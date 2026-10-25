@@ -1,6 +1,47 @@
-# ZapIA 🤖 — Sistema SaaS de Atendimento WhatsApp com IA
+# ZapIA 🤖 — Sistema SaaS de Atendimento WhatsApp com IA para Assistência Técnica de Celulares
 
-Sistema profissional e multi-tenant de atendimento ao cliente via WhatsApp, com Inteligência Artificial generativa, base de conhecimento customizável (RAG), handoff inteligente IA↔Humano e dashboard completo.
+> ⚠️ **Sistema Especializado:** Este é um sistema focado **EXCLUSIVAMENTE** em assistências técnicas de celulares e smartphones. Não é um sistema genérico de atendimento.
+
+Sistema profissional e multi-tenant de atendimento ao cliente via WhatsApp, com Inteligência Artificial generativa especializada em diagnóstico e suporte técnico, base de conhecimento customizável (RAG), handoff inteligente IA↔Humano e dashboard completo para gestão de ordens de serviço.
+
+---
+
+## 🎯 Nicho de Mercado
+
+### ✅ Ideal para:
+- Assistências técnicas de celulares e smartphones
+- Lojas de conserto e reparo (troca de tela, bateria, placa)
+- Técnicos autônomos especializados em dispositivos móveis
+- Assistências técnicas autorizadas
+- Lojas de revenda com serviço técnico
+
+### ❌ Não recomendado para:
+- Outros tipos de negócio (e-commerce, restaurantes, clínicas, etc)
+- Assistência técnica de outros eletrônicos (notebooks, TVs, consoles)
+- Negócios que não sejam relacionados a reparo de celulares
+
+### 💡 Por que este foco?
+O sistema foi desenvolvido com:
+- **IA especializada** em diagnóstico de defeitos de celulares
+- **Ferramentas específicas** para consulta de OS, orçamentos por modelo e marca
+- **Base de conhecimento** focada em marcas (Apple, Samsung, Motorola, Xiaomi, etc)
+- **Fluxo de trabalho** otimizado para oficinas técnicas (triagem → diagnóstico → reparo → entrega)
+- **Respostas rápidas** para cenários comuns (celular molhado, garantia, tela quebrada)
+
+---
+
+## 📚 Documentação Canônica e Harness de IA
+
+Este projeto adota os padrões e o harness do **Vibe Coding Toolkit** para desenvolvimento assistido por IA:
+
+- **Instruções para Agentes:** [AGENTS.md](AGENTS.md) (e [CLAUDE.md](CLAUDE.md))
+- **Visão de Produto e MVP:** [PRODUCT.md](PRODUCT.md)
+- **Arquitetura e Engenharia:** [docs/architecture.md](docs/architecture.md)
+- **Design e Acessibilidade:** [docs/design.md](docs/design.md)
+- **Setup e Onboarding Local:** [docs/onboarding.md](docs/onboarding.md)
+- **Padrões de Qualidade e Governança:** [docs/quality.md](docs/quality.md)
+- **Evidências de Adoção do Toolkit:** [docs/setup.md](docs/setup.md)
+- **Protocolo de Auditoria de Segurança:** [docs/security-review.md](docs/security-review.md)
 
 ---
 

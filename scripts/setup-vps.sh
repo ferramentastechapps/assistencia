@@ -123,8 +123,8 @@ log "Todos os serviços iniciados!"
 
 section "11. Aguardando banco de dados"
 sleep 15
-docker compose exec -T backend sh -c "(npx prisma migrate deploy || npx prisma db push) && npx prisma db seed" 2>/dev/null || true
-log "Migrações e sementes executadas"
+docker compose exec -T backend sh -c "npx prisma migrate deploy && npx prisma db seed" 2>/dev/null || true
+log "Migrações executadas"
 
 section "═══ SETUP CONCLUÍDO ═══"
 echo ""

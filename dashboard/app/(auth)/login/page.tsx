@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import { useRouter } from 'next/navigation'
-import { MessageCircle, Eye, EyeOff, ArrowRight } from 'lucide-react'
+import { Eye, EyeOff, ArrowRight, Wrench } from 'lucide-react'
 import { authApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
 import toast from 'react-hot-toast'
@@ -51,11 +51,11 @@ export default function LoginPage() {
         const btnContainer = document.getElementById('google-login-btn')
         if (btnContainer) {
           window.google.accounts.id.renderButton(btnContainer, {
-            theme: 'filled_black',
+            theme: 'outline',
             size: 'large',
             width: btnContainer.offsetWidth || 350,
             text: 'continue_with',
-            shape: 'rectangular',
+            shape: 'pill',
             locale: 'pt-BR'
           })
         }
@@ -92,32 +92,31 @@ export default function LoginPage() {
         strategy="afterInteractive"
         onLoad={initGoogle}
       />
-      <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
-        {/* Background glow */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-brand-500/8 blur-[120px]" />
-        </div>
-
+      <div className="min-h-screen bg-[#E5E3DC] flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md animate-slide-up">
-          {/* Logo */}
+          {/* Logo & Tablet Identity */}
           <div className="text-center mb-8">
-            <Link href="/" className="inline-flex items-center gap-2.5 justify-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center shadow-glow">
-                <MessageCircle size={20} className="text-white" />
+            <Link href="/" className="inline-flex items-center gap-3 justify-center group">
+              <div className="w-12 h-12 rounded-2xl bg-[#18191B] flex items-center justify-center shadow-tactile-dark transition-transform duration-300 group-hover:scale-105">
+                <Wrench size={22} className="text-[#F5C518]" />
               </div>
-              <span className="font-bold text-2xl tracking-tight">Zap<span className="gradient-text">IA</span></span>
+              <span className="font-black text-2xl tracking-tight text-[#18191B]">
+                Zap<span className="text-[#F5C518]">IA</span>
+              </span>
             </Link>
-            <p className="text-white/40 text-sm mt-3">Entre na sua conta para continuar</p>
+            <p className="text-[#787C87] text-xs font-semibold mt-2">
+              Gestão de Bancada & Atendimento WhatsApp com IA
+            </p>
           </div>
 
-          {/* Card */}
-          <div className="card p-8">
+          {/* Porcelain Clay Card */}
+          <div className="card !p-8 shadow-tactile-card rounded-[32px]">
             {/* Google Sign-in */}
             <div className="mb-6 flex flex-col items-center">
               <div id="google-login-btn" className="w-full flex justify-center min-h-[44px]">
                 {googleLoading && (
-                  <div className="flex items-center gap-2 text-sm text-brand-400 py-2">
-                    <div className="w-4 h-4 border-2 border-brand-400 border-t-transparent rounded-full animate-spin" />
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#18191B] py-2">
+                    <div className="w-4 h-4 border-2 border-[#18191B] border-t-transparent rounded-full animate-spin" />
                     Autenticando com Google...
                   </div>
                 )}
@@ -126,20 +125,20 @@ export default function LoginPage() {
 
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10" />
+                <div className="w-full border-t border-black/[0.08]" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-surface-900 px-3 text-white/40 font-medium">ou com seu e-mail</span>
+              <div className="relative flex justify-center text-[11px] uppercase tracking-wider">
+                <span className="bg-white px-3 text-[#888C95] font-bold">ou com seu e-mail</span>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="label">Email</label>
+                <label className="label">Email Profissional</label>
                 <input
                   type="email"
                   className="input"
-                  placeholder="seu@email.com"
+                  placeholder="tecnico@assistencia.com"
                   value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                   required
@@ -159,8 +158,8 @@ export default function LoginPage() {
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPass(!showPass)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                    onClick={() => setShowPass(s => !s)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888C95] hover:text-[#18191B] transition-colors"
                   >
                     {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -169,23 +168,22 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                disabled={loading || googleLoading}
-                className="btn-primary w-full flex items-center justify-center gap-2 py-3"
+                disabled={loading}
+                className="w-full btn-primary !py-3 font-bold mt-2 text-sm shadow-tactile-dark"
               >
-                {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>Entrar com E-mail <ArrowRight size={16} /></>
-                )}
+                {loading ? 'Entrando na bancada...' : 'Acessar Sistema'}
+                <ArrowRight size={15} />
               </button>
             </form>
 
-            <p className="text-center text-sm text-white/40 mt-6">
-              Não tem conta?{' '}
-              <Link href="/register" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
-                Criar grátis
-              </Link>
-            </p>
+            <div className="mt-6 pt-5 border-t border-black/[0.06] text-center">
+              <p className="text-xs text-[#787C87] font-medium">
+                Não tem uma conta de assistência?{' '}
+                <Link href="/register" className="text-[#18191B] font-bold underline hover:opacity-80">
+                  Criar conta grátis
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

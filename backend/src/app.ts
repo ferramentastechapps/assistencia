@@ -24,7 +24,7 @@ import { catalogRoutes } from './modules/catalog/catalog.routes'
 export async function buildApp() {
   const app = Fastify({
     logger: config.env === 'development'
-      ? { level: 'info', transport: { target: 'pino-pretty' } }
+      ? { level: 'info' }
       : { level: 'error' },
     trustProxy: true
   })

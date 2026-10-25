@@ -1,3 +1,9 @@
+// ⚠️ ════════════════════════════════════════════════════════════════════════════
+// ⚠️  ATENÇÃO: Este sistema é EXCLUSIVAMENTE para assistência técnica de celulares
+// ⚠️  NÃO adicione outros templates de negócio neste array
+// ⚠️  Qualquer outro nicho de negócio deve ser uma instalação separada
+// ⚠️ ════════════════════════════════════════════════════════════════════════════
+
 export interface BusinessTemplate {
   id: string
   name: string
@@ -29,8 +35,11 @@ export interface BusinessTemplate {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// ÚNICO TEMPLATE PERMITIDO: Assistência Técnica de Celulares
+// ═══════════════════════════════════════════════════════════════════════════════
 export const BUSINESS_TEMPLATES: BusinessTemplate[] = [
-  // ─── 1. ASSISTÊNCIA TÉCNICA DE CELULARES (PRINCIPAL / DESTAQUE) ─────────────
+  // ─── ASSISTÊNCIA TÉCNICA DE CELULARES (ÚNICO TEMPLATE DO SISTEMA) ─────────────
   {
     id: 'cellphone_repair',
     name: 'Assistência Técnica de Celulares',
@@ -136,5 +145,17 @@ Atendemos todas as principais fabricantes do mercado:
 - Cartão de débito e dinheiro.`
     }
   }
+  // ❌ NÃO ADICIONE MAIS TEMPLATES AQUI
+  // ❌ Este sistema é exclusivo para assistência técnica de celulares
 ]
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Validação de segurança: garantir que apenas o template de celular existe
+// ═══════════════════════════════════════════════════════════════════════════════
+if (BUSINESS_TEMPLATES.length !== 1 || BUSINESS_TEMPLATES[0].id !== 'cellphone_repair') {
+  throw new Error(
+    '🚨 ERRO DE CONFIGURAÇÃO: Este sistema deve conter APENAS o template "cellphone_repair". ' +
+    'Qualquer outro template viola o propósito exclusivo de assistência técnica de celulares.'
+  )
+}
 

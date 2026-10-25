@@ -10,7 +10,7 @@ RUN npm install --omit=dev --legacy-peer-deps
 
 COPY dist ./dist
 COPY prisma ./prisma
-RUN npx prisma generate
+RUN npx prisma@5.19.1 generate
 
 USER fastify
 

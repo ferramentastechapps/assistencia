@@ -248,7 +248,7 @@ export default function LandingPage() {
             <Check size={13} className="text-emerald-400" /> Sem prazo de validade
           </span>
           <span className="flex items-center gap-1.5">
-            <Check size={13} className="text-emerald-400" /> Sem marca d'água nas respostas
+            <Check size={13} className="text-emerald-400" /> Sem marca d&apos;água nas respostas
           </span>
           <span className="flex items-center gap-1.5">
             <Check size={13} className="text-emerald-400" /> Conexão em 30 segundos
@@ -488,7 +488,7 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Check size={14} className="text-emerald-400 flex-shrink-0" />
-                  <span><strong>Sem marca d'água</strong> nas respostas</span>
+                  <span><strong>Sem marca d&apos;água</strong> nas respostas</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check size={14} className="text-emerald-400 flex-shrink-0" />

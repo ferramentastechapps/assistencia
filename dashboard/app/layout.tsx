@@ -3,12 +3,12 @@ import './globals.css'
 import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
-  title: 'ZapIA — Atendimento Inteligente via WhatsApp',
-  description: 'Sistema profissional de atendimento ao cliente via WhatsApp com Inteligência Artificial. Automatize, personalize e escale seu atendimento.',
-  keywords: 'WhatsApp, chatbot, IA, atendimento, automação, CRM',
+  title: 'ZapIA — Gestão Inteligente de Assistência Técnica & WhatsApp',
+  description: 'Sistema operacional completo para assistência técnica de celulares com IA integrada, controle de bancada e automação no WhatsApp.',
+  keywords: 'Assistência técnica, celulares, WhatsApp, chatbot, IA, ordens de serviço, CRM, trade-in',
   openGraph: {
-    title: 'ZapIA — Atendimento Inteligente via WhatsApp',
-    description: 'Automatize e escale seu atendimento com IA',
+    title: 'ZapIA — Gestão de Assistência Técnica com IA',
+    description: 'Automatize sua bancada e atendimento de celular com IA',
     type: 'website'
   }
 }
@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR" className="dark">
+    <html lang="pt-BR">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -28,24 +28,24 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#050507] text-[#f1f3f9] antialiased selection:bg-emerald-500/25 selection:text-emerald-300">
+      <body className="bg-[#E5E3DC] text-[#1C1D21] font-sans antialiased selection:bg-[#F5C518]/30 selection:text-black min-h-screen">
         {children}
         <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#090a0f',
-              color: '#f1f3f9',
-              border: '1px solid rgba(255,255,255,0.09)',
-              borderRadius: '16px',
+              background: '#FFFFFF',
+              color: '#1C1D21',
+              border: '1px solid rgba(0,0,0,0.06)',
+              borderRadius: '20px',
               fontSize: '13px',
-              fontWeight: 500,
-              boxShadow: '0 20px 40px -10px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1)',
-              padding: '12px 16px',
+              fontWeight: 600,
+              boxShadow: '0 16px 36px -6px rgba(0,0,0,0.08), inset 0 1px 0 #FFFFFF',
+              padding: '12px 18px',
             },
             success: {
-              iconTheme: { primary: '#10b981', secondary: '#050507' }
+              iconTheme: { primary: '#18191B', secondary: '#F5C518' }
             }
           }}
         />

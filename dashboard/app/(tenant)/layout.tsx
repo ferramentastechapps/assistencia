@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard, MessageSquare, Smartphone, Brain,
   BookOpen, Inbox, BarChart3, LogOut,
-  MessageCircle, ChevronRight, Zap, Kanban, Sparkles,
+  ChevronRight, Zap, Kanban,
   Wrench, ShoppingBag
 } from 'lucide-react'
 import { useAuthStore } from '@/lib/store'
@@ -16,7 +16,7 @@ interface NavSection {
   title: string
   items: {
     href: string
-    icon: React.ComponentType<{ size?: number; className?: string }>
+    icon: React.ComponentType<{ size?: number | string; className?: string }>
     label: string
     badge?: string
   }[]
@@ -64,39 +64,38 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
   if (!user) return null
 
   return (
-    <div className="flex h-screen bg-[#050507] text-[#f1f3f9] overflow-hidden font-sans">
-      {/* ─── Ambient Glow Effect ────────────────────────────────────── */}
-      <div className="fixed top-0 left-64 right-0 h-64 bg-gradient-to-b from-emerald-500/[0.03] via-cyan-500/[0.015] to-transparent pointer-events-none z-0" />
-
-      {/* ─── Sidebar ──────────────────────────────────────────────────── */}
-      <aside className="w-64 flex-shrink-0 flex flex-col border-r border-white/[0.07] bg-[#07080b]/95 backdrop-blur-2xl z-20">
+    <div className="flex h-screen bg-[#E5E3DC] text-[#1C1D21] overflow-hidden font-sans select-none">
+      {/* ─── Organic Warm Sidebar (Clay & Capsule Aesthetic) ─────────── */}
+      <aside className="w-64 flex-shrink-0 flex flex-col border-r border-black/[0.06] bg-[#E5E3DC] z-20">
         {/* Brand & Logo Header */}
-        <div className="p-4 border-b border-white/[0.06]">
+        <div className="p-4 border-b border-black/[0.05]">
           <Link href="/dashboard" className="flex items-center gap-3 group">
-            <div className="relative p-1 rounded-2xl bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-[0_0_12px_rgba(16,185,129,0.4)]">
-                <MessageCircle size={17} className="text-white" />
+            <div className="relative p-1 rounded-2xl bg-white shadow-tactile-sm border border-black/[0.04] transition-transform duration-300 group-hover:scale-105">
+              <div className="w-8 h-8 rounded-xl bg-[#18191B] flex items-center justify-center text-white shadow-sm">
+                <Wrench size={16} className="text-[#F5C518]" />
               </div>
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm tracking-tight text-white">Zap<span className="text-emerald-400">IA</span></span>
-                <span className="text-[9px] px-1.5 py-0.2 rounded-full font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Tech Pro
+                <span className="font-extrabold text-sm tracking-tight text-[#18191B]">
+                  Zap<span className="text-[#F5C518] drop-shadow-sm">IA</span>
+                </span>
+                <span className="text-[9px] px-2 py-0.2 rounded-full font-bold uppercase tracking-wider bg-[#18191B] text-white">
+                  Bancada
                 </span>
               </div>
-              <div className="text-[11px] text-white/40 font-medium truncate max-w-[135px]">
+              <div className="text-[11px] text-[#787C87] font-medium truncate max-w-[135px]">
                 {user.tenant.name}
               </div>
             </div>
           </Link>
         </div>
 
-        {/* Grouped Navigation */}
+        {/* Grouped Capsule Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto scrollbar-thin">
           {navSections.map((section) => (
             <div key={section.title} className="space-y-1">
-              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white/30">
+              <div className="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#888C95]">
                 {section.title}
               </div>
               {section.items.map((item) => {
@@ -105,33 +104,33 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                   <Link key={item.href} href={item.href}>
                     <div
                       className={clsx(
-                        'group flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer select-none',
+                        'group flex items-center gap-2.5 px-3 py-2 rounded-full text-xs transition-all duration-200 cursor-pointer',
                         active
-                          ? 'text-white bg-gradient-to-r from-emerald-500/15 via-emerald-500/10 to-transparent border border-emerald-500/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]'
-                          : 'text-white/55 hover:text-white hover:bg-white/[0.04]'
+                          ? 'text-[#18191B] bg-white font-bold shadow-[0_4px_16px_-2px_rgba(27,28,30,0.06),inset_0_1px_0_#fff] border border-black/[0.04]'
+                          : 'text-[#555962] hover:text-[#18191B] hover:bg-white/60 font-medium'
                       )}
                     >
                       <item.icon
                         size={16}
                         className={clsx(
                           'flex-shrink-0 transition-transform duration-200 group-hover:scale-110',
-                          active ? 'text-emerald-400' : 'text-white/40 group-hover:text-white/70'
+                          active ? 'text-[#18191B]' : 'text-[#888C95] group-hover:text-[#18191B]'
                         )}
                       />
                       <span className="flex-1 truncate tracking-tight">{item.label}</span>
 
                       {item.badge === 'Live' && (
-                        <div className="flex items-center gap-1 bg-emerald-500/15 text-emerald-300 text-[10px] px-1.5 py-0.5 rounded-full border border-emerald-500/30 font-semibold">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        <div className="flex items-center gap-1 bg-[#18191B] text-white text-[10px] px-2 py-0.5 rounded-full font-semibold shadow-sm">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#F5C518] animate-pulse" />
                           Live
                         </div>
                       )}
                       {item.badge && item.badge !== 'Live' && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-white/[0.06] text-white/50 border border-white/[0.06] font-medium">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#DDD9CE] text-[#332F26] font-semibold border border-black/[0.04]">
                           {item.badge}
                         </span>
                       )}
-                      {active && <ChevronRight size={13} className="text-emerald-400/60" />}
+                      {active && <ChevronRight size={13} className="text-[#18191B]" />}
                     </div>
                   </Link>
                 )
@@ -140,41 +139,41 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
           ))}
         </nav>
 
-        {/* Usage Hardware Meter */}
-        <div className="p-3 mx-3 mb-2 rounded-2xl bg-white/[0.02] border border-white/[0.06] shadow-inner">
-          <div className="flex items-center justify-between text-[11px] text-white/50 mb-1.5 font-medium">
+        {/* Usage Hardware Meter in Warm Clay Well */}
+        <div className="p-3 mx-3 mb-2 rounded-[20px] bg-white/70 border border-black/[0.04] shadow-tactile-pill">
+          <div className="flex items-center justify-between text-[11px] text-[#555962] mb-1.5 font-medium">
             <span>Uso da cota</span>
-            <span className="text-white/80 font-semibold">{user.tenant.apiUsage} / {user.tenant.maxMessages}</span>
+            <span className="text-[#18191B] font-bold">{user.tenant.apiUsage} / {user.tenant.maxMessages}</span>
           </div>
-          <div className="h-1.5 bg-black/40 rounded-full overflow-hidden p-0.2 border border-white/[0.05]">
+          <div className="h-1.5 bg-[#DDD9CE] rounded-full overflow-hidden p-0.2">
             <div
-              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500"
+              className="h-full bg-[#18191B] rounded-full transition-all duration-500"
               style={{ width: `${Math.min((user.tenant.apiUsage / user.tenant.maxMessages) * 100, 100)}%` }}
             />
           </div>
           {user.tenant.plan === 'FREE' && (
             <Link
               href="/pricing"
-              className="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 py-1.5 px-3 rounded-lg border border-emerald-500/20 transition-all"
+              className="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] font-bold text-[#18191B] bg-[#F5C518] hover:bg-[#FFE033] py-1.5 px-3 rounded-full shadow-sm transition-all"
             >
-              <Zap size={12} /> Upgrade para Pro
+              <Zap size={12} className="fill-current" /> Upgrade Pro
             </Link>
           )}
         </div>
 
-        {/* User Pill / Logout */}
-        <div className="p-3 border-t border-white/[0.06] bg-[#050507]/40">
-          <div className="flex items-center gap-2.5 px-1 py-1">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-sm">
+        {/* User Capsule Pill */}
+        <div className="p-3 border-t border-black/[0.05] bg-[#E5E3DC]">
+          <div className="flex items-center gap-2.5 p-1 rounded-2xl bg-white border border-black/[0.04] shadow-tactile-pill">
+            <div className="w-8 h-8 rounded-full bg-[#18191B] text-[#F5C518] flex items-center justify-center text-xs font-extrabold flex-shrink-0 shadow-sm">
               {user.name[0].toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-xs font-semibold text-white/90 truncate">{user.name}</div>
-              <div className="text-[10px] text-white/40 truncate">{user.email}</div>
+              <div className="text-xs font-bold text-[#18191B] truncate">{user.name}</div>
+              <div className="text-[10px] text-[#787C87] truncate">{user.email}</div>
             </div>
             <button
               onClick={logout}
-              className="p-1.5 rounded-lg hover:bg-white/[0.08] text-white/40 hover:text-rose-400 transition-all"
+              className="p-1.5 rounded-full hover:bg-rose-50 text-[#888C95] hover:text-rose-600 transition-all mr-1"
               title="Sair do sistema"
             >
               <LogOut size={14} />
@@ -183,8 +182,8 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
         </div>
       </aside>
 
-      {/* ─── Main Content Canvas ─────────────────────────────────────────── */}
-      <main className="flex-1 overflow-y-auto relative z-10">
+      {/* ─── Main Content Canvas (Tablet Frame Ergonomics) ─────────────── */}
+      <main className="flex-1 overflow-y-auto relative z-10 bg-[#E5E3DC]">
         {children}
       </main>
     </div>

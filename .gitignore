@@ -5,13 +5,16 @@ node_modules/
 # Builds e temporários
 .next/
 */.next/
+dist/
+*/dist/
 *.tar.gz
+*.tar
 *.tmp
 
 # Variáveis de ambiente
-*.env*
-!*.env.example
 *.env
+*.env.*
+!*.env.example
 backend/.env
 dashboard/.env.local
 

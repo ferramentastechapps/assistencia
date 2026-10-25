@@ -40,14 +40,14 @@ interface RepairStats {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; border: string }> = {
-  EM_ANALISE: { label: 'Em Análise', bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20' },
-  AGUARDANDO_APROVACAO: { label: 'Aguardando Aprovação', bg: 'bg-orange-500/10', text: 'text-orange-400', border: 'border-orange-500/20' },
-  APROVADO: { label: 'Aprovado', bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/20' },
-  AGUARDANDO_PECA: { label: 'Aguardando Peça', bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/20' },
-  EM_CONSERTO: { label: 'Em Conserto', bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/20' },
-  PRONTO: { label: 'Pronto p/ Retirada', bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
-  ENTREGUE: { label: 'Entregue / Concluído', bg: 'bg-zinc-500/10', text: 'text-zinc-400', border: 'border-zinc-500/20' },
-  CANCELADO: { label: 'Cancelado', bg: 'bg-rose-500/10', text: 'text-rose-400', border: 'border-rose-500/20' },
+  EM_ANALISE: { label: 'Em Análise', bg: 'bg-[#FEF9C3]', text: 'text-[#854D0E]', border: 'border-[#FDE047]/60' },
+  AGUARDANDO_APROVACAO: { label: 'Aguardando Aprovação', bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' },
+  APROVADO: { label: 'Aprovado', bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200' },
+  AGUARDANDO_PECA: { label: 'Aguardando Peça', bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+  EM_CONSERTO: { label: 'Em Conserto', bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+  PRONTO: { label: 'Pronto p/ Retirada', bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+  ENTREGUE: { label: 'Entregue / Concluído', bg: 'bg-[#EAE8E1]', text: 'text-[#555962]', border: 'border-black/[0.04]' },
+  CANCELADO: { label: 'Cancelado', bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200' },
 }
 
 export default function RepairsPage() {
@@ -56,7 +56,7 @@ export default function RepairsPage() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
-  
+
   // Modais
   const [isNewModalOpen, setIsNewModalOpen] = useState(false)
   const [statusModalOrder, setStatusModalOrder] = useState<RepairOrder | null>(null)
@@ -162,111 +162,105 @@ export default function RepairsPage() {
   }
 
   return (
-    <div className="p-6 md:p-8 space-y-7 max-w-7xl mx-auto overflow-y-auto h-full font-sans animate-fade-in">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto overflow-y-auto h-full font-sans animate-fade-in bg-[#E5E3DC]">
       {/* ─── Header ────────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="rounded-full px-2.5 py-0.5 text-[10px] uppercase tracking-[0.2em] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center gap-1">
-              <Wrench size={12} /> Bancada & Oficina Técnica
+            <span className="rounded-full px-3 py-0.5 text-[10px] uppercase tracking-wider font-extrabold bg-[#18191B] text-white flex items-center gap-1.5 shadow-sm">
+              <Wrench size={12} className="text-[#F5C518]" /> Bancada & Oficina Técnica
             </span>
-            <span className="text-white/30 text-xs">•</span>
-            <span className="text-white/40 text-xs font-medium">Fluxo de Reparos em Tempo Real</span>
+            <span className="text-[#888C95] text-xs">•</span>
+            <span className="text-[#555962] text-xs font-semibold">Fluxo de Reparos em Tempo Real</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">Ordens de Serviço (OS)</h1>
-          <p className="text-xs text-white/50 mt-1 max-w-2xl">
+          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#18191B]">
+            Ordens de Serviço (OS)
+          </h1>
+          <p className="text-xs text-[#787C87] mt-1 max-w-2xl font-medium">
             Gestão de diagnósticos, troca de peças, termos de garantia e avisos automáticos via WhatsApp diretamente para o cliente.
           </p>
         </div>
 
-        {/* Button-in-Button New OS */}
+        {/* Tactile New OS Button */}
         <button
           onClick={() => setIsNewModalOpen(true)}
-          className="group inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] active:scale-[0.98] shrink-0 self-start sm:self-auto"
+          className="group inline-flex items-center gap-3 bg-[#18191B] hover:bg-black text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 shadow-tactile-dark active:scale-[0.98] shrink-0 self-start sm:self-auto"
         >
           <span>Nova Ordem de Serviço</span>
-          <span className="w-6 h-6 rounded-full bg-black/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-200">
+          <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-[#F5C518] group-hover:scale-110 transition-transform duration-200">
             <Plus size={13} />
           </span>
         </button>
       </div>
 
-      {/* ─── Metric Cards (Double-Bezel) ──────────────────────────────────── */}
+      {/* ─── Metric Cards (Tactile Porcelain Clay) ────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bezel-chassis">
-          <div className="bezel-core p-4">
-            <div className="flex items-center justify-between text-white/40 text-[11px] font-semibold uppercase tracking-wider mb-2">
-              <span>Total Cadastradas</span>
-              <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-white/60">
-                <Wrench size={13} />
-              </div>
+        <div className="card !p-5">
+          <div className="flex items-center justify-between text-[#888C95] text-[11px] font-bold uppercase tracking-wider mb-2">
+            <span>Total Cadastradas</span>
+            <div className="w-8 h-8 rounded-xl bg-[#EFECE4] flex items-center justify-center text-[#18191B]">
+              <Wrench size={14} />
             </div>
-            <div className="text-2xl font-extrabold text-white tracking-tight">{stats.total}</div>
-            <p className="text-[10px] text-white/35 mt-1 font-medium">Todas as OS registradas</p>
           </div>
+          <div className="text-3xl font-black text-[#18191B] tracking-tight">{stats.total}</div>
+          <p className="text-[11px] text-[#787C87] mt-1 font-medium">Todas as OS registradas</p>
         </div>
 
-        <div className="bezel-chassis">
-          <div className="bezel-core p-4 bg-gradient-to-br from-amber-500/[0.06] via-[#090a0f] to-[#090a0f]">
-            <div className="flex items-center justify-between text-amber-400/80 text-[11px] font-semibold uppercase tracking-wider mb-2">
-              <span>Em Bancada</span>
-              <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                <Clock size={13} />
-              </div>
+        <div className="card !p-5 bg-gradient-to-br from-amber-50/50 via-white to-white">
+          <div className="flex items-center justify-between text-[#854D0E] text-[11px] font-bold uppercase tracking-wider mb-2">
+            <span>Em Bancada</span>
+            <div className="w-8 h-8 rounded-xl bg-[#FEF9C3] flex items-center justify-center text-[#854D0E]">
+              <Clock size={14} />
             </div>
-            <div className="text-2xl font-extrabold text-amber-400 tracking-tight">{stats.emBancada}</div>
-            <p className="text-[10px] text-amber-400/50 mt-1 font-medium">Análise, conserto ou peça</p>
           </div>
+          <div className="text-3xl font-black text-[#854D0E] tracking-tight">{stats.emBancada}</div>
+          <p className="text-[11px] text-[#888C95] mt-1 font-medium">Análise, conserto ou peça</p>
         </div>
 
-        <div className="bezel-chassis">
-          <div className="bezel-core p-4 bg-gradient-to-br from-emerald-500/[0.06] via-[#090a0f] to-[#090a0f]">
-            <div className="flex items-center justify-between text-emerald-400/80 text-[11px] font-semibold uppercase tracking-wider mb-2">
-              <span>Pronto p/ Retirada</span>
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                <CheckCircle2 size={13} />
-              </div>
+        <div className="card !p-5 bg-gradient-to-br from-emerald-50/50 via-white to-white">
+          <div className="flex items-center justify-between text-emerald-700 text-[11px] font-bold uppercase tracking-wider mb-2">
+            <span>Pronto p/ Retirada</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
+              <CheckCircle2 size={14} />
             </div>
-            <div className="text-2xl font-extrabold text-emerald-400 tracking-tight">{stats.prontos}</div>
-            <p className="text-[10px] text-emerald-400/50 mt-1 font-medium">Aguardando cliente vir buscar</p>
           </div>
+          <div className="text-3xl font-black text-emerald-800 tracking-tight">{stats.prontos}</div>
+          <p className="text-[11px] text-[#787C87] mt-1 font-medium">Aguardando cliente vir buscar</p>
         </div>
 
-        <div className="bezel-chassis">
-          <div className="bezel-core p-4">
-            <div className="flex items-center justify-between text-white/40 text-[11px] font-semibold uppercase tracking-wider mb-2">
-              <span>Faturamento Pago</span>
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                <DollarSign size={13} />
-              </div>
+        <div className="card !p-5">
+          <div className="flex items-center justify-between text-[#888C95] text-[11px] font-bold uppercase tracking-wider mb-2">
+            <span>Faturamento Pago</span>
+            <div className="w-8 h-8 rounded-xl bg-[#EFECE4] flex items-center justify-center text-[#18191B]">
+              <DollarSign size={14} />
             </div>
-            <div className="text-2xl font-extrabold text-emerald-400 tracking-tight">{formatCurrency(stats.totalRevenue)}</div>
-            <p className="text-[10px] text-white/35 mt-1 font-medium">Receita de reparos concluídos</p>
           </div>
+          <div className="text-3xl font-black text-[#18191B] tracking-tight">{formatCurrency(stats.totalRevenue)}</div>
+          <p className="text-[11px] text-[#787C87] mt-1 font-medium">Receita de reparos concluídos</p>
         </div>
       </div>
 
-      {/* ─── Filtros e Busca (Floating Island) ──────────────────────────────── */}
-      <div className="bezel-chassis">
-        <div className="bezel-core p-3 flex flex-col md:flex-row items-center justify-between gap-3">
+      {/* ─── Filtros e Busca (Floating Capsule Bar) ─────────────────────────── */}
+      <div className="card !p-3">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
           <form onSubmit={handleSearchSubmit} className="relative w-full md:w-80">
-            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35" />
+            <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#888C95]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar por OS, cliente, telefone ou modelo..."
-              className="w-full bg-[#0c0d14] border border-white/[0.08] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-white/35 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition-all shadow-inner"
+              className="w-full bg-[#EFECE4] border border-black/[0.04] rounded-full pl-10 pr-4 py-2 text-xs text-[#18191B] placeholder-[#888C95] focus:outline-none focus:bg-white focus:border-[#18191B] transition-all"
             />
           </form>
 
           <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none">
             <button
               onClick={() => setStatusFilter('')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
                 statusFilter === ''
-                  ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-sm'
-                  : 'bg-white/[0.04] text-white/50 hover:text-white hover:bg-white/[0.08]'
+                  ? 'bg-[#18191B] text-white shadow-tactile-dark'
+                  : 'bg-[#EFECE4] text-[#555962] hover:text-[#18191B] hover:bg-white border border-black/[0.03]'
               }`}
             >
               Todos
@@ -275,10 +269,10 @@ export default function RepairsPage() {
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all shadow-sm ${
                   statusFilter === st
-                    ? 'bg-white/[0.12] text-white border border-white/20'
-                    : 'bg-white/[0.03] text-white/50 hover:text-white hover:bg-white/[0.06]'
+                    ? 'bg-[#18191B] text-white shadow-tactile-dark'
+                    : 'bg-[#EFECE4] text-[#555962] hover:text-[#18191B] hover:bg-white border border-black/[0.03]'
                 }`}
               >
                 {STATUS_CONFIG[st]?.label || st}
@@ -286,7 +280,7 @@ export default function RepairsPage() {
             ))}
             <button
               onClick={loadData}
-              className="p-2 bg-white/[0.04] hover:bg-white/[0.08] text-white/60 hover:text-white rounded-lg transition-colors ml-auto border border-white/[0.06]"
+              className="p-2 bg-[#EFECE4] hover:bg-white text-[#555962] hover:text-[#18191B] rounded-full transition-colors ml-auto border border-black/[0.04] shadow-sm"
               title="Recarregar lista"
             >
               <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
@@ -295,341 +289,336 @@ export default function RepairsPage() {
         </div>
       </div>
 
-      {/* ─── Tabela de Ordens de Serviço (Hardware Panel) ──────────────────── */}
-      <div className="bezel-chassis overflow-hidden">
-        <div className="bezel-core p-0">
-          {loading ? (
-            <div className="p-16 text-center text-white/40 flex flex-col items-center justify-center gap-3">
-              <RefreshCw size={24} className="animate-spin text-emerald-400" />
-              <span className="text-xs font-medium">Sincronizando Ordens de Serviço...</span>
+      {/* ─── Tabela de Ordens de Serviço (Porcelain Card Sheet) ─────────────── */}
+      <div className="card !p-0 overflow-hidden">
+        {loading ? (
+          <div className="p-16 text-center text-[#787C87] flex flex-col items-center justify-center gap-3">
+            <RefreshCw size={24} className="animate-spin text-[#18191B]" />
+            <span className="text-xs font-semibold">Sincronizando Ordens de Serviço...</span>
+          </div>
+        ) : orders.length === 0 ? (
+          <div className="p-16 text-center text-[#787C87] flex flex-col items-center justify-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#EFECE4] flex items-center justify-center text-[#18191B]">
+              <Wrench size={22} />
             </div>
-          ) : orders.length === 0 ? (
-            <div className="p-16 text-center text-white/40 flex flex-col items-center justify-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-white/20">
-                <Wrench size={24} />
-              </div>
-              <span className="text-sm font-semibold text-white/70">Nenhuma Ordem de Serviço encontrada</span>
-              <p className="text-xs max-w-sm text-white/35">
-                Crie uma nova Ordem de Serviço para iniciar o fluxo técnico da bancada ou altere os filtros acima.
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-white/[0.02] border-b border-white/[0.06] text-white/40 font-semibold uppercase tracking-wider text-[10px]">
-                  <tr>
-                    <th className="py-3.5 px-4">OS #</th>
-                    <th className="py-3.5 px-4">Cliente & WhatsApp</th>
-                    <th className="py-3.5 px-4">Aparelho</th>
-                    <th className="py-3.5 px-4">Defeito Relatado</th>
-                    <th className="py-3.5 px-4">Status</th>
-                    <th className="py-3.5 px-4 text-right">Total</th>
-                    <th className="py-3.5 px-4 text-center">Ações</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/[0.04]">
-                  {orders.map((o) => {
-                    const st = STATUS_CONFIG[o.status] || { label: o.status, bg: 'bg-white/[0.05]', text: 'text-white/60', border: 'border-white/10' }
-                    return (
-                      <tr key={o.id} className="hover:bg-white/[0.02] transition-colors group">
-                        <td className="py-3.5 px-4 font-bold text-white font-mono">
-                          {o.orderNumber}
-                          <div className="text-[10px] text-white/35 font-normal">
-                            {new Date(o.createdAt).toLocaleDateString('pt-BR')}
-                          </div>
-                        </td>
-                        <td className="py-3.5 px-4">
-                          <div className="font-semibold text-white/90">{o.customerName}</div>
-                          <a
-                            href={`https://wa.me/55${o.customerPhone.replace(/\D/g, '')}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-[11px] text-emerald-400 hover:text-emerald-300 transition-colors mt-0.5"
+            <span className="text-sm font-bold text-[#18191B]">Nenhuma Ordem de Serviço encontrada</span>
+            <p className="text-xs max-w-sm text-[#787C87]">
+              Crie uma nova Ordem de Serviço para iniciar o fluxo técnico da bancada ou altere os filtros acima.
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[#FAF9F6] border-b border-black/[0.05] text-[#787C87] font-bold uppercase tracking-wider text-[10px]">
+                <tr>
+                  <th className="py-3.5 px-5">OS #</th>
+                  <th className="py-3.5 px-4">Cliente & WhatsApp</th>
+                  <th className="py-3.5 px-4">Aparelho</th>
+                  <th className="py-3.5 px-4">Defeito Relatado</th>
+                  <th className="py-3.5 px-4">Status</th>
+                  <th className="py-3.5 px-4 text-right">Total</th>
+                  <th className="py-3.5 px-5 text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-black/[0.04]">
+                {orders.map((o) => {
+                  const st = STATUS_CONFIG[o.status] || { label: o.status, bg: 'bg-[#EFECE4]', text: 'text-[#18191B]', border: 'border-black/[0.04]' }
+                  return (
+                    <tr key={o.id} className="hover:bg-[#FAF9F6] transition-colors group">
+                      <td className="py-3.5 px-5 font-bold text-[#18191B] font-mono">
+                        {o.orderNumber}
+                        <div className="text-[10px] text-[#888C95] font-normal">
+                          {new Date(o.createdAt).toLocaleDateString('pt-BR')}
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-[#18191B]">{o.customerName}</div>
+                        <a
+                          href={`https://wa.me/55${o.customerPhone.replace(/\D/g, '')}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] text-[#18191B] font-semibold hover:underline mt-0.5"
+                        >
+                          <Phone size={10} className="text-[#10B981]" /> {o.customerPhone}
+                        </a>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-[#18191B] flex items-center gap-1.5">
+                          <Smartphone size={13} className="text-[#787C87]" />
+                          {o.deviceBrand} {o.deviceModel}
+                        </div>
+                        {o.deviceColor && <div className="text-[10px] text-[#787C87]">Cor: {o.deviceColor}</div>}
+                      </td>
+                      <td className="py-3.5 px-4 max-w-[220px]">
+                        <p className="truncate text-[#555962] font-medium" title={o.reportedDefect}>{o.reportedDefect}</p>
+                        {o.technicalDiagnosis && (
+                          <p className="text-[10px] text-[#787C87] truncate">Diag: {o.technicalDiagnosis}</p>
+                        )}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border shadow-sm ${st.bg} ${st.text} ${st.border}`}>
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
+                          {st.label}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 text-right font-black text-[#18191B] tracking-tight">
+                        {formatCurrency(o.totalAmount)}
+                        <div className="text-[10px] font-semibold">
+                          {o.paidAt ? <span className="text-[#10B981]">Pago</span> : <span className="text-[#888C95]">Pendente</span>}
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-5">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            onClick={() => {
+                              setStatusModalOrder(o)
+                              setNewStatus(o.status)
+                              setCustomMessage(`Olá ${o.customerName}! Atualização da sua OS ${o.orderNumber} (${o.deviceBrand} ${o.deviceModel}): status alterado para `)
+                            }}
+                            className="p-2 bg-[#EFECE4] hover:bg-[#18191B] text-[#18191B] hover:text-white rounded-full transition-all shadow-sm"
+                            title="Atualizar Status & Notificar WhatsApp"
                           >
-                            <Phone size={10} /> {o.customerPhone}
-                          </a>
-                        </td>
-                        <td className="py-3.5 px-4">
-                          <div className="font-semibold text-white/90 flex items-center gap-1.5">
-                            <Smartphone size={13} className="text-cyan-400" />
-                            {o.deviceBrand} {o.deviceModel}
-                          </div>
-                          {o.deviceColor && <div className="text-[10px] text-white/40">Cor: {o.deviceColor}</div>}
-                        </td>
-                        <td className="py-3.5 px-4 max-w-[220px]">
-                          <p className="truncate text-white/70" title={o.reportedDefect}>{o.reportedDefect}</p>
-                          {o.technicalDiagnosis && (
-                            <p className="text-[10px] text-white/40 truncate">Diag: {o.technicalDiagnosis}</p>
-                          )}
-                        </td>
-                        <td className="py-3.5 px-4">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${st.bg} ${st.text} ${st.border}`}>
-                            <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
-                            {st.label}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-4 text-right font-bold text-white tracking-tight">
-                          {formatCurrency(o.totalAmount)}
-                          <div className="text-[10px] text-white/40 font-normal">
-                            {o.paidAt ? <span className="text-emerald-400 font-semibold">Pago</span> : 'Pendente'}
-                          </div>
-                        </td>
-                        <td className="py-3.5 px-4">
-                          <div className="flex items-center justify-center gap-1.5">
-                            <button
-                              onClick={() => {
-                                setStatusModalOrder(o)
-                                setNewStatus(o.status)
-                                setCustomMessage(`Olá ${o.customerName}! Atualização da sua OS ${o.orderNumber} (${o.deviceBrand} ${o.deviceModel}): status alterado para `)
-                              }}
-                              className="p-2 bg-white/[0.04] hover:bg-emerald-500/20 text-white/70 hover:text-emerald-300 border border-white/[0.08] hover:border-emerald-500/30 rounded-xl transition-all"
-                              title="Atualizar Status & Notificar WhatsApp"
-                            >
-                              <Send size={13} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+                            <Send size={13} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
-      {/* ─── Modal: Nova Ordem de Serviço ──────────────────────────────────── */}
+      {/* ─── Modal: Nova Ordem de Serviço (Tactile Porcelain Box) ──────────── */}
       {isNewModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bezel-chassis w-full max-w-2xl my-8">
-            <div className="bezel-core p-6 bg-[#090a0f]">
-              <div className="flex items-center justify-between border-b border-white/[0.07] pb-4 mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-                    <Wrench size={16} />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-base text-white tracking-tight">Emitir Ordem de Serviço</h3>
-                    <p className="text-xs text-white/40">Entrada de aparelho para bancada técnica</p>
-                  </div>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl my-8 card !p-7 shadow-tablet-kiosk rounded-[32px] animate-slide-up">
+            <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-2xl bg-[#18191B] text-[#F5C518] flex items-center justify-center shadow-sm">
+                  <Wrench size={16} />
                 </div>
-                <button
-                  onClick={() => setIsNewModalOpen(false)}
-                  className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/[0.08] transition-all"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-
-              <form onSubmit={handleCreateOrder} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">Nome do Cliente *</label>
-                    <input
-                      required
-                      type="text"
-                      value={formData.customerName}
-                      onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-                      placeholder="Ex: Carlos Eduardo"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">WhatsApp com DDD *</label>
-                    <input
-                      required
-                      type="text"
-                      value={formData.customerPhone}
-                      onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
-                      placeholder="Ex: 11999998888"
-                      className="input"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">Marca *</label>
-                    <select
-                      value={formData.deviceBrand}
-                      onChange={(e) => setFormData({ ...formData, deviceBrand: e.target.value })}
-                      className="input cursor-pointer"
-                    >
-                      <option value="Apple">Apple (iPhone)</option>
-                      <option value="Samsung">Samsung</option>
-                      <option value="Motorola">Motorola</option>
-                      <option value="Xiaomi">Xiaomi / Poco</option>
-                      <option value="Outra">Outra marca</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">Modelo do Aparelho *</label>
-                    <input
-                      required
-                      type="text"
-                      value={formData.deviceModel}
-                      onChange={(e) => setFormData({ ...formData, deviceModel: e.target.value })}
-                      placeholder="Ex: iPhone 13 128GB"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">Cor do Aparelho</label>
-                    <input
-                      type="text"
-                      value={formData.deviceColor}
-                      onChange={(e) => setFormData({ ...formData, deviceColor: e.target.value })}
-                      placeholder="Ex: Azul Meia-Noite"
-                      className="input"
-                    />
-                  </div>
-                </div>
-
                 <div>
-                  <label className="text-xs text-white/60 font-semibold mb-1.5 block">Defeito Relatado pelo Cliente *</label>
-                  <textarea
+                  <h3 className="font-black text-base text-[#18191B] tracking-tight">Emitir Ordem de Serviço</h3>
+                  <p className="text-xs text-[#787C87] font-medium">Entrada de aparelho para bancada técnica</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsNewModalOpen(false)}
+                className="p-2 rounded-full text-[#787C87] hover:text-[#18191B] hover:bg-[#EFECE4] transition-all"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateOrder} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="label">Nome do Cliente *</label>
+                  <input
                     required
-                    rows={2}
-                    value={formData.reportedDefect}
-                    onChange={(e) => setFormData({ ...formData, reportedDefect: e.target.value })}
-                    placeholder="Ex: Tela trincada após queda, touch parou de funcionar na metade inferior..."
-                    className="input resize-none"
+                    type="text"
+                    value={formData.customerName}
+                    onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+                    placeholder="Ex: Carlos Eduardo"
+                    className="input"
                   />
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">Custo de Peças (R$)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.partsCost}
-                      onChange={(e) => setFormData({ ...formData, partsCost: e.target.value })}
-                      placeholder="0.00"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">Mão de Obra (R$)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.laborCost}
-                      onChange={(e) => setFormData({ ...formData, laborCost: e.target.value })}
-                      placeholder="0.00"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/60 font-semibold mb-1.5 block">Garantia (dias)</label>
-                    <input
-                      type="number"
-                      value={formData.warrantyDays}
-                      onChange={(e) => setFormData({ ...formData, warrantyDays: Number(e.target.value) })}
-                      className="input"
-                    />
-                  </div>
+                <div>
+                  <label className="label">WhatsApp com DDD *</label>
+                  <input
+                    required
+                    type="text"
+                    value={formData.customerPhone}
+                    onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
+                    placeholder="Ex: 11999998888"
+                    className="input"
+                  />
                 </div>
+              </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/[0.07]">
-                  <button
-                    type="button"
-                    onClick={() => setIsNewModalOpen(false)}
-                    className="btn-secondary text-xs"
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="label">Marca *</label>
+                  <select
+                    value={formData.deviceBrand}
+                    onChange={(e) => setFormData({ ...formData, deviceBrand: e.target.value })}
+                    className="input cursor-pointer"
                   >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={savingOrder}
-                    className="btn-primary text-xs"
-                  >
-                    {savingOrder ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />}
-                    Salvar & Gerar OS
-                  </button>
+                    <option value="Apple">Apple (iPhone)</option>
+                    <option value="Samsung">Samsung</option>
+                    <option value="Motorola">Motorola</option>
+                    <option value="Xiaomi">Xiaomi / Poco</option>
+                    <option value="Outra">Outra marca</option>
+                  </select>
                 </div>
-              </form>
-            </div>
+                <div>
+                  <label className="label">Modelo do Aparelho *</label>
+                  <input
+                    required
+                    type="text"
+                    value={formData.deviceModel}
+                    onChange={(e) => setFormData({ ...formData, deviceModel: e.target.value })}
+                    placeholder="Ex: iPhone 13 128GB"
+                    className="input"
+                  />
+                </div>
+                <div>
+                  <label className="label">Cor do Aparelho</label>
+                  <input
+                    type="text"
+                    value={formData.deviceColor}
+                    onChange={(e) => setFormData({ ...formData, deviceColor: e.target.value })}
+                    placeholder="Ex: Azul Meia-Noite"
+                    className="input"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="label">Defeito Relatado pelo Cliente *</label>
+                <textarea
+                  required
+                  rows={2}
+                  value={formData.reportedDefect}
+                  onChange={(e) => setFormData({ ...formData, reportedDefect: e.target.value })}
+                  placeholder="Ex: Tela trincada após queda, touch parou de funcionar na metade inferior..."
+                  className="w-full bg-white border border-black/[0.08] text-[#1C1D21] placeholder-[#9DA1AB] rounded-2xl p-4 text-sm outline-none focus:border-[#18191B] resize-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="label">Custo de Peças (R$)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.partsCost}
+                    onChange={(e) => setFormData({ ...formData, partsCost: e.target.value })}
+                    placeholder="0.00"
+                    className="input"
+                  />
+                </div>
+                <div>
+                  <label className="label">Mão de Obra (R$)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.laborCost}
+                    onChange={(e) => setFormData({ ...formData, laborCost: e.target.value })}
+                    placeholder="0.00"
+                    className="input"
+                  />
+                </div>
+                <div>
+                  <label className="label">Garantia (dias)</label>
+                  <input
+                    type="number"
+                    value={formData.warrantyDays}
+                    onChange={(e) => setFormData({ ...formData, warrantyDays: Number(e.target.value) })}
+                    className="input"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-black/[0.06]">
+                <button
+                  type="button"
+                  onClick={() => setIsNewModalOpen(false)}
+                  className="btn-secondary text-xs"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingOrder}
+                  className="btn-primary text-xs"
+                >
+                  {savingOrder ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />}
+                  Salvar & Gerar OS
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
 
       {/* ─── Modal: Alterar Status & Notificar ─────────────────────────────── */}
       {statusModalOrder && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bezel-chassis w-full max-w-lg">
-            <div className="bezel-core p-6 bg-[#090a0f]">
-              <div className="flex items-center justify-between border-b border-white/[0.07] pb-3 mb-4">
-                <div>
-                  <h3 className="font-bold text-base text-white tracking-tight">Atualizar Status — {statusModalOrder.orderNumber}</h3>
-                  <p className="text-xs text-white/40">{statusModalOrder.customerName} ({statusModalOrder.deviceBrand} {statusModalOrder.deviceModel})</p>
-                </div>
-                <button
-                  onClick={() => setStatusModalOrder(null)}
-                  className="p-1 rounded-lg text-white/40 hover:text-white hover:bg-white/[0.08] transition-all"
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-lg card !p-7 shadow-tablet-kiosk rounded-[32px] animate-slide-up">
+            <div className="flex items-center justify-between border-b border-black/[0.06] pb-3 mb-4">
+              <div>
+                <h3 className="font-black text-base text-[#18191B] tracking-tight">Atualizar Status — {statusModalOrder.orderNumber}</h3>
+                <p className="text-xs text-[#787C87]">{statusModalOrder.customerName} ({statusModalOrder.deviceBrand} {statusModalOrder.deviceModel})</p>
+              </div>
+              <button
+                onClick={() => setStatusModalOrder(null)}
+                className="p-2 rounded-full text-[#787C87] hover:text-[#18191B] hover:bg-[#EFECE4] transition-all"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="label">Novo Status da OS:</label>
+                <select
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                  className="input cursor-pointer"
                 >
-                  <X size={18} />
-                </button>
+                  {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
+                    <option key={key} value={key}>{cfg.label}</option>
+                  ))}
+                </select>
               </div>
 
-              <div className="space-y-4 text-xs">
+              <div className="flex items-center gap-2.5 p-3.5 bg-[#EFECE4] rounded-2xl border border-black/[0.03]">
+                <input
+                  type="checkbox"
+                  id="notifyWhatsapp"
+                  checked={notifyWhatsapp}
+                  onChange={(e) => setNotifyWhatsapp(e.target.checked)}
+                  className="rounded text-[#18191B] focus:ring-black h-4 w-4 bg-white"
+                />
+                <label htmlFor="notifyWhatsapp" className="text-xs text-[#18191B] cursor-pointer select-none font-bold">
+                  Disparar notificação automática via WhatsApp para o cliente
+                </label>
+              </div>
+
+              {notifyWhatsapp && (
                 <div>
-                  <label className="text-white/60 font-semibold mb-1.5 block">Novo Status da OS:</label>
-                  <select
-                    value={newStatus}
-                    onChange={(e) => setNewStatus(e.target.value)}
-                    className="input cursor-pointer"
-                  >
-                    {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
-                      <option key={key} value={key}>{cfg.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="flex items-center gap-2.5 p-3 bg-white/[0.02] rounded-xl border border-white/[0.06]">
-                  <input
-                    type="checkbox"
-                    id="notifyWhatsapp"
-                    checked={notifyWhatsapp}
-                    onChange={(e) => setNotifyWhatsapp(e.target.checked)}
-                    className="rounded border-white/20 text-emerald-500 focus:ring-emerald-500 h-4 w-4 bg-[#0d0e15]"
+                  <label className="label">Mensagem personalizada (opcional):</label>
+                  <textarea
+                    rows={3}
+                    value={customMessage}
+                    onChange={(e) => setCustomMessage(e.target.value)}
+                    placeholder="Deixe em branco para usar o modelo automático da IA..."
+                    className="w-full bg-white border border-black/[0.08] text-[#1C1D21] placeholder-[#9DA1AB] rounded-2xl p-3.5 text-xs outline-none focus:border-[#18191B] resize-none"
                   />
-                  <label htmlFor="notifyWhatsapp" className="text-xs text-white/80 cursor-pointer select-none font-medium">
-                    Disparar notificação automática via WhatsApp para o cliente
-                  </label>
                 </div>
+              )}
 
-                {notifyWhatsapp && (
-                  <div>
-                    <label className="text-white/60 font-semibold mb-1.5 block">Mensagem personalizada (opcional):</label>
-                    <textarea
-                      rows={3}
-                      value={customMessage}
-                      onChange={(e) => setCustomMessage(e.target.value)}
-                      placeholder="Deixe em branco para usar o modelo automático da IA..."
-                      className="input resize-none"
-                    />
-                  </div>
-                )}
-
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.07]">
-                  <button
-                    type="button"
-                    onClick={() => setStatusModalOrder(null)}
-                    className="btn-secondary text-xs"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={handleUpdateStatus}
-                    disabled={savingStatus}
-                    className="btn-primary text-xs"
-                  >
-                    {savingStatus ? <RefreshCw size={14} className="animate-spin" /> : <Send size={14} />}
-                    Confirmar & Atualizar
-                  </button>
-                </div>
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-black/[0.06]">
+                <button
+                  type="button"
+                  onClick={() => setStatusModalOrder(null)}
+                  className="btn-secondary text-xs"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleUpdateStatus}
+                  disabled={savingStatus}
+                  className="btn-primary text-xs"
+                >
+                  {savingStatus ? <RefreshCw size={14} className="animate-spin" /> : <Send size={14} />}
+                  Salvar e Notificar
+                </button>
               </div>
             </div>
           </div>

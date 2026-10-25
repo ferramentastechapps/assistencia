@@ -38,6 +38,14 @@ export async function templatesRoutes(app: FastifyInstance) {
         return reply.code(400).send({ error: 'templateId é obrigatório' })
       }
 
+      // 🔒 PROTEÇÃO: Apenas o template de assistência técnica de celulares é permitido
+      if (templateId !== 'cellphone_repair') {
+        return reply.code(403).send({
+          error: 'Template não permitido',
+          message: 'Este sistema é exclusivo para assistência técnica de celulares. Apenas o template "cellphone_repair" pode ser aplicado.'
+        })
+      }
+
       const template = BUSINESS_TEMPLATES.find((t) => t.id === templateId)
       if (!template) {
         return reply.code(404).send({ error: 'Modelo de negócio não encontrado' })
