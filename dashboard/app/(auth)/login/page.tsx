@@ -92,24 +92,24 @@ export default function LoginPage() {
         strategy="afterInteractive"
         onLoad={initGoogle}
       />
-      <div className="min-h-screen bg-[#E5E3DC] flex items-center justify-center px-4 py-8">
+      <div className="min-h-screen bg-[#DCD8CD] flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md animate-slide-up">
           {/* Logo & Tablet Identity */}
           <div className="text-center mb-8">
             <Link href="/" className="inline-flex items-center gap-3 justify-center group">
-              <div className="w-12 h-12 rounded-2xl bg-[#18191B] flex items-center justify-center shadow-tactile-dark transition-transform duration-300 group-hover:scale-105">
+              <div className="w-12 h-12 rounded-2xl bg-[#232528]/85 backdrop-blur-sm border border-white/10 flex items-center justify-center shadow-tactile-dark transition-transform duration-300 group-hover:scale-105">
                 <Wrench size={22} className="text-[#F5C518]" />
               </div>
-              <span className="font-black text-2xl tracking-tight text-[#18191B]">
+              <span className="font-black text-2xl tracking-tight text-[#1C1D21]">
                 Zap<span className="text-[#F5C518]">IA</span>
               </span>
             </Link>
-            <p className="text-[#787C87] text-xs font-semibold mt-2">
+            <p className="text-[#797D8A] text-xs font-semibold mt-2">
               Gestão de Bancada & Atendimento WhatsApp com IA
             </p>
           </div>
 
-          {/* Porcelain Clay Card */}
+          {/* Clay Card */}
           <div className="card !p-8 shadow-tactile-card rounded-[32px]">
             {/* Google Sign-in */}
             <div className="mb-6 flex flex-col items-center">

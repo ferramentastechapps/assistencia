@@ -28,7 +28,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#E5E3DC] text-[#1C1D21] font-sans antialiased selection:bg-[#F5C518]/30 selection:text-black min-h-screen">
+      <body className="bg-[#DCD8CD] text-[#1C1D21] font-sans antialiased selection:bg-[#F5C518]/30 selection:text-black min-h-screen">
         {children}
         <Toaster
           position="top-right"

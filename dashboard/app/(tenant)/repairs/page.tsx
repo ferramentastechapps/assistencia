@@ -162,21 +162,21 @@ export default function RepairsPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto overflow-y-auto h-full font-sans animate-fade-in bg-[#E5E3DC]">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-[1500px] mx-auto overflow-y-auto h-full font-sans animate-fade-in bg-[#DCD8CD]">
       {/* ─── Header ────────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="rounded-full px-3 py-0.5 text-[10px] uppercase tracking-wider font-extrabold bg-[#18191B] text-white flex items-center gap-1.5 shadow-sm">
+            <span className="rounded-full px-3 py-0.5 text-[10px] uppercase tracking-wider font-extrabold bg-[#232528]/85 text-white backdrop-blur-sm border border-white/10 flex items-center gap-1.5 shadow-sm">
               <Wrench size={12} className="text-[#F5C518]" /> Bancada & Oficina Técnica
             </span>
-            <span className="text-[#888C95] text-xs">•</span>
-            <span className="text-[#555962] text-xs font-semibold">Fluxo de Reparos em Tempo Real</span>
+            <span className="text-[#797D8A] text-xs">•</span>
+            <span className="text-[#524D41] text-xs font-semibold">Fluxo de Reparos em Tempo Real</span>
           </div>
-          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#18191B]">
+          <h1 className="text-2xl lg:text-3xl font-black tracking-tight text-[#1C1D21]">
             Ordens de Serviço (OS)
           </h1>
-          <p className="text-xs text-[#787C87] mt-1 max-w-2xl font-medium">
+          <p className="text-xs text-[#797D8A] mt-1 max-w-2xl font-medium">
             Gestão de diagnósticos, troca de peças, termos de garantia e avisos automáticos via WhatsApp diretamente para o cliente.
           </p>
         </div>
@@ -184,7 +184,7 @@ export default function RepairsPage() {
         {/* Tactile New OS Button */}
         <button
           onClick={() => setIsNewModalOpen(true)}
-          className="group inline-flex items-center gap-3 bg-[#18191B] hover:bg-black text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 shadow-tactile-dark active:scale-[0.98] shrink-0 self-start sm:self-auto"
+          className="group inline-flex items-center gap-3 bg-[#232528]/85 hover:bg-[#1A1C1E]/95 text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 shadow-tactile-dark backdrop-blur-md border border-white/10 active:scale-[0.98] shrink-0 self-start sm:self-auto"
         >
           <span>Nova Ordem de Serviço</span>
           <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-[#F5C518] group-hover:scale-110 transition-transform duration-200">
@@ -193,50 +193,50 @@ export default function RepairsPage() {
         </button>
       </div>
 
-      {/* ─── Metric Cards (Tactile Porcelain Clay) ────────────────────────── */}
+      {/* ─── Metric Cards (Tactile Clay) ────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="card !p-5">
-          <div className="flex items-center justify-between text-[#888C95] text-[11px] font-bold uppercase tracking-wider mb-2">
+          <div className="flex items-center justify-between text-[#797D8A] text-[11px] font-bold uppercase tracking-wider mb-2">
             <span>Total Cadastradas</span>
-            <div className="w-8 h-8 rounded-xl bg-[#EFECE4] flex items-center justify-center text-[#18191B]">
+            <div className="w-8 h-8 rounded-xl bg-white shadow-tactile-pill border border-black/[0.04] flex items-center justify-center text-[#1C1D21]">
               <Wrench size={14} />
             </div>
           </div>
-          <div className="text-3xl font-black text-[#18191B] tracking-tight">{stats.total}</div>
-          <p className="text-[11px] text-[#787C87] mt-1 font-medium">Todas as OS registradas</p>
+          <div className="text-3xl font-black text-[#1C1D21] tracking-tight">{stats.total}</div>
+          <p className="text-[11px] text-[#797D8A] mt-1 font-medium">Todas as OS registradas</p>
         </div>
 
-        <div className="card !p-5 bg-gradient-to-br from-amber-50/50 via-white to-white">
+        <div className="card !p-5">
           <div className="flex items-center justify-between text-[#854D0E] text-[11px] font-bold uppercase tracking-wider mb-2">
             <span>Em Bancada</span>
-            <div className="w-8 h-8 rounded-xl bg-[#FEF9C3] flex items-center justify-center text-[#854D0E]">
+            <div className="w-8 h-8 rounded-xl bg-[#F5C518] flex items-center justify-center text-[#18191B] font-bold shadow-sm">
               <Clock size={14} />
             </div>
           </div>
           <div className="text-3xl font-black text-[#854D0E] tracking-tight">{stats.emBancada}</div>
-          <p className="text-[11px] text-[#888C95] mt-1 font-medium">Análise, conserto ou peça</p>
+          <p className="text-[11px] text-[#797D8A] mt-1 font-medium">Análise, conserto ou peça</p>
         </div>
 
-        <div className="card !p-5 bg-gradient-to-br from-emerald-50/50 via-white to-white">
-          <div className="flex items-center justify-between text-emerald-700 text-[11px] font-bold uppercase tracking-wider mb-2">
+        <div className="card !p-5">
+          <div className="flex items-center justify-between text-emerald-800 text-[11px] font-bold uppercase tracking-wider mb-2">
             <span>Pronto p/ Retirada</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
+            <div className="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800 shadow-sm">
               <CheckCircle2 size={14} />
             </div>
           </div>
           <div className="text-3xl font-black text-emerald-800 tracking-tight">{stats.prontos}</div>
-          <p className="text-[11px] text-[#787C87] mt-1 font-medium">Aguardando cliente vir buscar</p>
+          <p className="text-[11px] text-[#797D8A] mt-1 font-medium">Aguardando cliente vir buscar</p>
         </div>
 
         <div className="card !p-5">
-          <div className="flex items-center justify-between text-[#888C95] text-[11px] font-bold uppercase tracking-wider mb-2">
+          <div className="flex items-center justify-between text-[#797D8A] text-[11px] font-bold uppercase tracking-wider mb-2">
             <span>Faturamento Pago</span>
-            <div className="w-8 h-8 rounded-xl bg-[#EFECE4] flex items-center justify-center text-[#18191B]">
+            <div className="w-8 h-8 rounded-xl bg-white shadow-tactile-pill border border-black/[0.04] flex items-center justify-center text-[#1C1D21]">
               <DollarSign size={14} />
             </div>
           </div>
-          <div className="text-3xl font-black text-[#18191B] tracking-tight">{formatCurrency(stats.totalRevenue)}</div>
-          <p className="text-[11px] text-[#787C87] mt-1 font-medium">Receita de reparos concluídos</p>
+          <div className="text-3xl font-black text-[#1C1D21] tracking-tight">{formatCurrency(stats.totalRevenue)}</div>
+          <p className="text-[11px] text-[#797D8A] mt-1 font-medium">Receita de reparos concluídos</p>
         </div>
       </div>
 
@@ -244,13 +244,13 @@ export default function RepairsPage() {
       <div className="card !p-3">
         <div className="flex flex-col md:flex-row items-center justify-between gap-3">
           <form onSubmit={handleSearchSubmit} className="relative w-full md:w-80">
-            <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#888C95]" />
+            <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#797D8A]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar por OS, cliente, telefone ou modelo..."
-              className="w-full bg-[#EFECE4] border border-black/[0.04] rounded-full pl-10 pr-4 py-2 text-xs text-[#18191B] placeholder-[#888C95] focus:outline-none focus:bg-white focus:border-[#18191B] transition-all"
+              className="w-full bg-white border border-black/[0.05] rounded-full pl-10 pr-4 py-2 text-xs text-[#1C1D21] placeholder-[#797D8A] focus:outline-none focus:border-[#232528] shadow-sm transition-all"
             />
           </form>
 
@@ -259,8 +259,8 @@ export default function RepairsPage() {
               onClick={() => setStatusFilter('')}
               className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
                 statusFilter === ''
-                  ? 'bg-[#18191B] text-white shadow-tactile-dark'
-                  : 'bg-[#EFECE4] text-[#555962] hover:text-[#18191B] hover:bg-white border border-black/[0.03]'
+                  ? 'bg-[#232528]/85 text-white backdrop-blur-md border border-white/10 shadow-tactile-dark'
+                  : 'bg-white text-[#2E3036] hover:bg-[#FAF9F6] border border-black/[0.04] shadow-tactile-pill'
               }`}
             >
               Todos
@@ -271,8 +271,8 @@ export default function RepairsPage() {
                 onClick={() => setStatusFilter(st)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all shadow-sm ${
                   statusFilter === st
-                    ? 'bg-[#18191B] text-white shadow-tactile-dark'
-                    : 'bg-[#EFECE4] text-[#555962] hover:text-[#18191B] hover:bg-white border border-black/[0.03]'
+                    ? 'bg-[#232528]/85 text-white backdrop-blur-md border border-white/10 shadow-tactile-dark'
+                    : 'bg-white text-[#2E3036] hover:bg-[#FAF9F6] border border-black/[0.04] shadow-tactile-pill'
                 }`}
               >
                 {STATUS_CONFIG[st]?.label || st}
@@ -280,7 +280,7 @@ export default function RepairsPage() {
             ))}
             <button
               onClick={loadData}
-              className="p-2 bg-[#EFECE4] hover:bg-white text-[#555962] hover:text-[#18191B] rounded-full transition-colors ml-auto border border-black/[0.04] shadow-sm"
+              className="p-2 bg-white hover:bg-[#FAF9F6] text-[#555962] hover:text-[#18191B] rounded-full transition-colors ml-auto border border-black/[0.04] shadow-tactile-pill"
               title="Recarregar lista"
             >
               <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />

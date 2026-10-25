@@ -310,23 +310,23 @@ export default function InboxPage() {
   )
 
   return (
-    <div className="flex h-full animate-fade-in bg-[#E5E3DC] text-[#1C1D21] select-none">
+    <div className="flex h-full animate-fade-in bg-[#DCD8CD] text-[#1C1D21] select-none">
       {/* ─── Sidebar: Lista de Conversas ────────────────────────────────────────── */}
-      <div className="w-80 flex-shrink-0 border-r border-black/[0.06] flex flex-col bg-[#EAE8E1]/90 backdrop-blur-md">
+      <div className="w-80 flex-shrink-0 border-r border-[#CAC5B7]/70 flex flex-col bg-[#E6E3D8]">
         {/* Header do Inbox com Filtros */}
-        <div className="p-4 border-b border-black/[0.06] space-y-3">
+        <div className="p-4 border-b border-[#CAC5B7]/60 space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="font-extrabold text-base flex items-center gap-2 text-[#18191B]">
+            <h2 className="font-extrabold text-base flex items-center gap-2 text-[#1C1D21]">
               <MessageSquare size={18} className="text-[#F5C518]" />
               Inbox Pro
             </h2>
-            <span className="text-xs bg-[#18191B] text-white px-2.5 py-0.5 rounded-full font-bold shadow-sm">
+            <span className="text-xs bg-[#232528]/85 text-white px-2.5 py-0.5 rounded-full font-bold shadow-sm backdrop-blur-sm border border-white/10">
               {conversations.length} chats
             </span>
           </div>
 
           {/* Abas de Filtro de Status */}
-          <div className="flex bg-[#DDD9CE] p-1 rounded-full text-xs font-semibold border border-black/[0.04]">
+          <div className="flex bg-[#DAD6C9] p-1 rounded-full text-xs font-semibold border border-black/[0.04]">
             {[
               { id: 'ALL', label: 'Todos' },
               { id: 'HUMAN_ACTIVE', label: 'Humano' },
@@ -339,8 +339,8 @@ export default function InboxPage() {
                   loadConversations()
                 }}
                 className={clsx('flex-1 py-1.5 rounded-full transition-all text-center', {
-                  'bg-white text-[#18191B] shadow-tactile-pill font-extrabold': filterStatus === tab.id,
-                  'text-[#555962] hover:text-[#18191B]': filterStatus !== tab.id
+                  'bg-white text-[#1C1D21] shadow-tactile-pill font-extrabold': filterStatus === tab.id,
+                  'text-[#555962] hover:text-[#1C1D21]': filterStatus !== tab.id
                 })}
               >
                 {tab.label}

@@ -112,24 +112,24 @@ export default function RegisterPage() {
         strategy="afterInteractive"
         onLoad={initGoogle}
       />
-      <div className="min-h-screen bg-[#E5E3DC] flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen bg-[#DCD8CD] flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md animate-slide-up">
           {/* Logo */}
           <div className="text-center mb-6">
             <Link href="/" className="inline-flex items-center gap-3 justify-center group">
-              <div className="w-12 h-12 rounded-2xl bg-[#18191B] flex items-center justify-center shadow-tactile-dark transition-transform duration-300 group-hover:scale-105">
+              <div className="w-12 h-12 rounded-2xl bg-[#232528]/85 backdrop-blur-sm border border-white/10 flex items-center justify-center shadow-tactile-dark transition-transform duration-300 group-hover:scale-105">
                 <Wrench size={22} className="text-[#F5C518]" />
               </div>
-              <span className="font-black text-2xl tracking-tight text-[#18191B]">
+              <span className="font-black text-2xl tracking-tight text-[#1C1D21]">
                 Zap<span className="text-[#F5C518]">IA</span>
               </span>
             </Link>
-            <p className="text-[#787C87] text-xs font-semibold mt-2">Crie sua conta para assistência técnica</p>
+            <p className="text-[#797D8A] text-xs font-semibold mt-2">Crie sua conta para assistência técnica</p>
 
             {/* Benefits Pills */}
             <div className="flex flex-wrap justify-center gap-2 mt-3">
               {benefits.map(b => (
-                <span key={b} className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#18191B] bg-white px-2.5 py-1 rounded-full shadow-tactile-pill border border-black/[0.04]">
+                <span key={b} className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1C1D21] bg-white px-2.5 py-1 rounded-full shadow-tactile-pill border border-black/[0.04]">
                   <CheckCircle2 size={12} className="text-[#10B981]" /> {b}
                 </span>
               ))}

@@ -18,158 +18,138 @@
   }
 
   body {
-    @apply bg-[#E5E3DC] text-[#1C1D21] font-sans;
-    background-color: #E5E3DC;
+    @apply bg-[#DCD8CD] text-[#1C1D21] font-sans;
+    background-color: #DCD8CD;
   }
 
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
-  ::-webkit-scrollbar-track { background: #E5E3DC; }
-  ::-webkit-scrollbar-thumb { background: #C8C4B7; border-radius: 9999px; }
-  ::-webkit-scrollbar-thumb:hover { background: #18191B; }
+  ::-webkit-scrollbar-track { background: #DCD8CD; }
+  ::-webkit-scrollbar-thumb { background: #C4BFB1; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #232528; }
 }
 
 /* ─── Components ────────────────────────────────────────────────────────────── */
 @layer components {
-  /* Warm Claymorphic Bezel Architecture (Matching Tablet Frame Aesthetic) */
+  /* Warm Claymorphic Chassis */
   .bezel-chassis {
-    @apply relative rounded-[32px] bg-[#EAE8E1]/90 border border-white/70 p-2 transition-all duration-300;
-    box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.06), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
-  }
-  .bezel-chassis:hover {
-    @apply border-white;
-    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+    @apply relative rounded-[32px] bg-[#E2DFD4] border border-[#CAC5B7]/70 p-2 transition-all duration-300;
+    box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.06), inset 0 1px 1px 0 rgba(255, 255, 255, 0.7);
   }
 
-  .bezel-core {
-    @apply rounded-[26px] bg-white p-6 relative overflow-hidden transition-all duration-300;
-    box-shadow: 0 4px 20px -2px rgba(27, 28, 30, 0.04), inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
-  }
-
-  /* Tactile Porcelain Card */
+  /* Tactile Clay Card — Clay background matching reference photo (NOT white) */
   .card {
-    @apply relative rounded-[26px] bg-white border border-black/[0.04] p-6 transition-all duration-200;
-    box-shadow: 0 8px 30px -4px rgba(27, 28, 30, 0.05), 0 2px 8px -2px rgba(27, 28, 30, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    @apply relative rounded-[28px] bg-[#E6E3D8] border border-[#CAC5B7]/70 p-6 transition-all duration-200;
+    box-shadow: 0 10px 30px -6px rgba(27, 28, 30, 0.05), 0 2px 8px -2px rgba(27, 28, 30, 0.02), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   }
   .card:hover {
-    box-shadow: 0 12px 36px -6px rgba(27, 28, 30, 0.08), 0 3px 10px -2px rgba(27, 28, 30, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
+    box-shadow: 0 14px 36px -6px rgba(27, 28, 30, 0.07), 0 3px 10px -2px rgba(27, 28, 30, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.85);
   }
 
-  /* Nested Clay Sub-Card */
+  /* Sunken Clay Sub-Card / Inner Wells */
   .card-clay {
-    @apply rounded-[22px] bg-[#EFECE4] border border-black/[0.03] p-4 transition-all duration-200;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    @apply rounded-[22px] bg-[#DAD6C9]/75 border border-black/[0.03] p-4 transition-all duration-200;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 
-  /* Buttons */
+  /* Buttons & Action Pills */
+  /* Translucent Matte Charcoal (Reference Style: Pills, Badges, Plus Button) */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 bg-[#18191B] text-white font-semibold px-5 py-2.5 rounded-full
-           hover:bg-black active:scale-[0.98] transition-all duration-200
-           shadow-[0_4px_14px_rgba(24,25,27,0.25),inset_0_1px_0_rgba(255,255,255,0.2)]
+    @apply inline-flex items-center justify-center gap-2 bg-[#232528]/85 hover:bg-[#1A1C1E]/95 text-white font-semibold px-5 py-2.5 rounded-full
+           backdrop-blur-md border border-white/10 active:scale-[0.98] transition-all duration-200
+           shadow-[0_4px_16px_rgba(20,22,25,0.22),inset_0_1px_0_rgba(255,255,255,0.2)]
            disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm tracking-tight;
   }
 
-  .btn-pill-action {
-    @apply group inline-flex items-center gap-2.5 bg-white hover:bg-[#FAF9F6] text-[#2E3036] hover:text-[#18191B]
-           border border-black/[0.06] hover:border-black/[0.12] px-4 py-2 rounded-full text-xs font-semibold
-           transition-all duration-200 shadow-[0_2px_8px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] active:scale-[0.97];
-  }
-  .btn-pill-icon {
-    @apply w-6 h-6 rounded-full bg-[#E5E3DC] flex items-center justify-center text-[#18191B]
-           group-hover:bg-[#18191B] group-hover:text-white transition-all duration-200;
+  /* Pure White Pill Button (White is strictly for buttons per reference) */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-white hover:bg-[#FAF9F6] border border-black/[0.05] text-[#1C1D21] font-semibold px-4 py-2 rounded-full
+           shadow-[0_2px_8px_rgba(0,0,0,0.04),inset_0_1px_0_#fff] active:scale-[0.98] transition-all duration-200 text-xs sm:text-sm;
   }
 
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 bg-[#FAF9F6] border border-black/[0.06] text-[#1C1D21] font-medium px-4 py-2.5 rounded-full
-           hover:bg-white hover:border-black/[0.12] active:scale-[0.98] transition-all duration-200 text-sm shadow-sm;
+  .btn-pill-action {
+    @apply group inline-flex items-center gap-2.5 bg-white hover:bg-[#FAF9F6] text-[#242629]
+           border border-black/[0.05] px-4 py-2 rounded-full text-xs font-bold
+           transition-all duration-200 shadow-[0_2px_8px_rgba(0,0,0,0.04),inset_0_1px_0_#fff] active:scale-[0.97];
+  }
+  .btn-pill-icon {
+    @apply w-6 h-6 rounded-full bg-[#E6E3D8] flex items-center justify-center text-[#1C1D21]
+           group-hover:bg-[#232528] group-hover:text-white transition-all duration-200;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-1.5 text-[#555962] font-medium px-3.5 py-2 rounded-full
-           hover:text-[#18191B] hover:bg-black/[0.04] transition-all duration-200 text-sm;
+    @apply inline-flex items-center justify-center gap-1.5 text-[#555962] font-semibold px-3.5 py-2 rounded-full
+           hover:text-[#18191B] hover:bg-black/[0.04] transition-all duration-200 text-xs sm:text-sm;
   }
 
   .btn-danger {
-    @apply bg-rose-50 border border-rose-200 text-rose-700 font-medium px-5 py-2.5 rounded-full
-           hover:bg-rose-100 active:scale-95 transition-all duration-150 text-sm;
+    @apply bg-rose-50 border border-rose-200 text-rose-700 font-semibold px-5 py-2 rounded-full
+           hover:bg-rose-100 active:scale-95 transition-all duration-150 text-xs;
   }
 
-  /* Inputs */
+  /* Inputs (Pure White Pill) */
   .input {
-    @apply w-full bg-white border border-black/[0.08] text-[#1C1D21] placeholder-[#9DA1AB]
-           rounded-full px-5 py-2.5 text-sm outline-none
-           focus:border-[#18191B] focus:ring-2 focus:ring-black/5
-           transition-all duration-200 shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)];
+    @apply w-full bg-white border border-black/[0.06] text-[#1C1D21] placeholder-[#888C95]
+           rounded-full px-5 py-2.5 text-xs sm:text-sm outline-none
+           focus:border-[#232528] focus:ring-2 focus:ring-black/5
+           transition-all duration-200 shadow-[0_2px_6px_rgba(0,0,0,0.03),inset_0_1px_1px_rgba(0,0,0,0.02)];
   }
 
   .label {
-    @apply block text-xs font-bold text-[#787C87] uppercase tracking-wider mb-1.5;
+    @apply block text-[11px] font-bold text-[#787C87] uppercase tracking-wider mb-1.5;
   }
 
   /* Badge System */
   .badge {
     @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-tight;
   }
-  .badge-yellow { @apply badge bg-[#FEF9C3] text-[#854D0E] border border-[#FDE047]/60; }
-  .badge-dark   { @apply badge bg-[#18191B] text-white shadow-sm; }
+  .badge-yellow { @apply badge bg-[#F5C518] text-[#18191B] font-extrabold shadow-sm; }
+  .badge-dark   { @apply badge bg-[#232528]/85 text-white backdrop-blur-sm border border-white/10 shadow-sm; }
+  .badge-white  { @apply badge bg-white text-[#1C1D21] border border-black/[0.04] shadow-sm; }
   .badge-green  { @apply badge bg-emerald-50 text-emerald-700 border border-emerald-200; }
   .badge-red    { @apply badge bg-rose-50 text-rose-700 border border-rose-200; }
   .badge-blue   { @apply badge bg-sky-50 text-sky-700 border border-sky-200; }
-  .badge-gray   { @apply badge bg-[#EAE8E1] text-[#484B53] border border-black/[0.04]; }
+  .badge-gray   { @apply badge bg-[#DAD6C9] text-[#484B53] border border-black/[0.04]; }
 
   /* Stat Card */
   .stat-card {
     @apply card p-5 flex flex-col gap-3;
   }
 
-  /* Sidebar Nav Item */
-  .nav-item {
-    @apply flex items-center gap-3 px-4 py-2.5 rounded-full text-xs font-medium
-           text-[#555962] hover:text-[#18191B] hover:bg-white/80
-           transition-all duration-200 cursor-pointer;
+  /* Top Navigation Pill Items (Reference Header) */
+  .top-nav-pill {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 whitespace-nowrap cursor-pointer select-none;
   }
-  .nav-item.active {
-    @apply text-[#18191B] bg-white font-semibold border border-black/[0.05];
-    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  .top-nav-pill-active {
+    @apply bg-[#232528]/85 text-white backdrop-blur-md border border-white/10 shadow-[0_4px_16px_rgba(20,22,25,0.22),inset_0_1px_0_rgba(255,255,255,0.18)];
   }
-
-  /* Status Dot */
-  .status-dot {
-    @apply w-2 h-2 rounded-full inline-block flex-shrink-0;
+  .top-nav-pill-inactive {
+    @apply bg-white hover:bg-[#FAF9F6] text-[#2E3036] border border-black/[0.04] shadow-[0_2px_8px_rgba(0,0,0,0.04),inset_0_1px_0_#fff];
   }
-  .status-dot.connected    { @apply bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]; }
-  .status-dot.disconnected { @apply bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]; }
-  .status-dot.connecting   { @apply bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.6)]; }
 
   /* Message Bubbles */
   .msg-user {
-    @apply bg-white border border-black/[0.05] rounded-3xl rounded-bl-sm px-4 py-3 max-w-xs text-sm text-[#1C1D21] shadow-sm;
+    @apply bg-white border border-black/[0.04] rounded-3xl rounded-bl-sm px-4 py-3 max-w-xs text-sm text-[#1C1D21] shadow-sm;
   }
   .msg-bot {
-    @apply bg-[#EFECE4] border border-black/[0.04] rounded-3xl rounded-br-sm px-4 py-3 max-w-xs text-sm text-[#1C1D21];
-  }
-
-  /* Floating Bottom Dock (Reference signature item) */
-  .floating-dock {
-    @apply fixed bottom-5 left-1/2 -translate-x-1/2 z-40 bg-[#18191B] text-white px-5 py-2.5 rounded-full
-           shadow-[0_16px_40px_rgba(0,0,0,0.25)] flex items-center gap-4 border border-white/10 backdrop-blur-md;
+    @apply bg-[#DAD6C9]/80 border border-black/[0.04] rounded-3xl rounded-br-sm px-4 py-3 max-w-xs text-sm text-[#1C1D21];
   }
 }
 
 /* ─── Utilities ─────────────────────────────────────────────────────────────── */
 @layer utilities {
   .gradient-text-dark {
-    @apply bg-gradient-to-r from-[#18191B] to-[#484B53] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#1C1D21] to-[#50535C] bg-clip-text text-transparent;
   }
 
   .border-subtle {
-    border-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(202, 197, 183, 0.7);
   }
 
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: #C8C4B7 transparent;
+    scrollbar-color: #C4BFB1 transparent;
   }
 }
