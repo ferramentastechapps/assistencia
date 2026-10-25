@@ -95,12 +95,12 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
               <X size={15} className="font-extrabold stroke-[2.5]" />
             </Link>
 
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#1C1D21]">
-                  {currentMeta.title}
-                </h1>
-                <span className="hidden sm:inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#DAD6C9] text-[#524D41]">
+            <div className="flex flex-col justify-center">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#1C1D21] leading-tight">
+                {currentMeta.title}
+              </h1>
+              <div className="mt-0.5">
+                <span className="inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#DAD6C9] text-[#524D41]">
                   {currentMeta.subtitle}
                 </span>
               </div>
