@@ -2,18 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import {
-  Kanban,
-  Search,
-  Plus,
-  Phone,
-  MessageSquare,
-  DollarSign,
-  Clock,
-  ExternalLink,
-  ChevronRight,
-  Filter,
-  CheckCircle2,
-  Sparkles
+  Kanban, Search, Phone, Clock, ExternalLink,
+  Plus, Sparkles, RefreshCw, ChevronRight
 } from 'lucide-react'
 import { pipelineApi, conversationsApi } from '@/lib/api'
 import { useRouter } from 'next/navigation'
@@ -37,11 +27,10 @@ export default function PipelinePage() {
   const [search, setSearch] = useState('')
   const [movingId, setMovingId] = useState<string | null>(null)
 
-  useEffect(() => {
-    loadBoard()
-  }, [])
+  useEffect(() => { loadBoard() }, [])
 
   const loadBoard = async () => {
+    setLoading(true)
     try {
       const { data } = await pipelineApi.getBoard()
       setBoard(data || [])
@@ -56,7 +45,7 @@ export default function PipelinePage() {
     setMovingId(conversationId)
     try {
       await conversationsApi.updateStage(conversationId, targetStageId)
-      toast.success('Lead movido com sucesso!')
+      toast.success('Lead movido!')
       loadBoard()
     } catch {
       toast.error('Erro ao mover lead')
@@ -82,94 +71,104 @@ export default function PipelinePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full bg-surface-950">
+      <div className="flex items-center justify-center h-full bg-[#DCD8CD]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-white/40 text-xs">Carregando funil CRM...</p>
+          <div className="relative">
+            <div className="w-12 h-12 rounded-full border-2 border-black/10 border-t-[#232528] animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-3.5 h-3.5 rounded-full bg-[#F5C518]" />
+            </div>
+          </div>
+          <p className="text-xs text-[#797D8A] font-semibold">Carregando funil CRM...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col h-full bg-surface-950 text-white animate-fade-in select-none">
-      {/* ─── Header do Funil ─────────────────────────────────────────────────── */}
-      <div className="px-8 py-5 border-b border-white/[0.08] flex items-center justify-between bg-surface-900/40 backdrop-blur-md">
+    <div className="flex flex-col h-full bg-[#DCD8CD] text-[#1C1D21] animate-fade-in select-none">
+
+      {/* ── Header ──────────────────────────────────────────────────── */}
+      <div className="px-6 py-4 border-b border-[#CAC5B7]/70 flex items-center justify-between gap-4 bg-[#DCD8CD]/95 backdrop-blur-md flex-shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center shadow-glow-sm">
-              <Kanban size={18} />
+            <div className="w-8 h-8 rounded-xl bg-[#232528]/85 text-[#F5C518] flex items-center justify-center shadow-tactile-dark border border-white/10 backdrop-blur-sm">
+              <Kanban size={16} />
             </div>
-            <h1 className="text-xl font-bold">Funil de Vendas & CRM</h1>
-            <span className="text-xs bg-white/[0.06] text-white/60 px-2.5 py-0.5 rounded-full font-medium">
-              {totalLeads} leads no funil
+            <h1 className="text-lg font-black tracking-tight text-[#1C1D21]">Funil CRM</h1>
+            <span className="text-xs bg-white text-[#1C1D21] px-2.5 py-0.5 rounded-full font-bold border border-black/[0.04] shadow-sm">
+              {totalLeads} leads
             </span>
           </div>
-          <p className="text-xs text-white/40 mt-1">
-            Acompanhe o ciclo de fechamento dos leads atendidos por IA e humanos
+          <p className="text-xs text-[#797D8A] mt-0.5 font-medium">
+            Ciclo de fechamento dos clientes atendidos
           </p>
         </div>
 
-        {/* Barra de Busca e Filtros */}
-        <div className="flex items-center gap-3">
-          <div className="relative w-64">
-            <Search size={14} className="absolute left-3 top-3 text-white/40" />
+        <div className="flex items-center gap-2">
+          <div className="relative w-56">
+            <Search size={13} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#797D8A]" />
             <input
-              className="input text-xs pl-9 py-2 bg-surface-800/80 border-white/[0.08]"
-              placeholder="Buscar por nome, telefone ou mensagem..."
+              className="w-full bg-white border border-black/[0.05] rounded-full pl-9 pr-4 py-2 text-xs text-[#1C1D21] placeholder-[#797D8A] focus:outline-none focus:border-[#232528] shadow-sm transition-all"
+              placeholder="Buscar por nome, telefone..."
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-
           <button
             onClick={loadBoard}
-            className="btn-secondary text-xs py-2 px-3 flex items-center gap-1.5"
+            className="w-9 h-9 bg-white hover:bg-[#FAF9F6] text-[#555962] hover:text-[#18191B] rounded-full flex items-center justify-center transition-all border border-black/[0.04] shadow-sm"
+            title="Recarregar"
           >
-            Atualizar
+            <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
           </button>
         </div>
       </div>
 
-      {/* ─── Colunas Kanban ──────────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-x-auto p-8 scrollbar-thin">
-        <div className="flex gap-5 h-full min-w-max items-start">
-          {filteredBoard.map(stage => {
-            return (
+      {/* ── Kanban Board ─────────────────────────────────────────────── */}
+      <div className="flex-1 overflow-x-auto p-6 scrollbar-thin">
+        {filteredBoard.length === 0 ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="card !p-10 text-center max-w-sm rounded-[32px]">
+              <div className="w-14 h-14 rounded-2xl bg-[#DAD6C9] flex items-center justify-center mx-auto mb-4 text-[#797D8A]">
+                <Kanban size={24} />
+              </div>
+              <h3 className="font-extrabold text-[#1C1D21] mb-1">Funil vazio</h3>
+              <p className="text-xs text-[#797D8A] font-medium">
+                Configure estágios do funil e mova conversas para acompanhar os negócios.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex gap-4 h-full min-w-max items-start pb-4">
+            {filteredBoard.map(stage => (
               <div
                 key={stage.id}
-                className="w-80 flex flex-col max-h-full bg-surface-900/60 rounded-2xl border border-white/[0.06] shadow-xl overflow-hidden backdrop-blur-md"
+                className="w-72 flex flex-col max-h-[calc(100vh-180px)] rounded-[24px] overflow-hidden"
+                style={{ boxShadow: '0 8px 24px -6px rgba(27,28,30,0.06), 0 2px 6px -2px rgba(27,28,30,0.03)' }}
               >
-                {/* Header da Coluna */}
+                {/* Column header */}
                 <div
-                  className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between"
+                  className="px-4 py-3 bg-[#E6E3D8] border-b border-[#CAC5B7]/70 flex items-center justify-between flex-shrink-0"
                   style={{ borderTop: `3px solid ${stage.color}` }}
                 >
                   <div className="flex items-center gap-2">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full"
-                      style={{ backgroundColor: stage.color }}
-                    />
-                    <h3 className="font-semibold text-xs tracking-wide uppercase">
-                      {stage.name}
-                    </h3>
+                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: stage.color }} />
+                    <h3 className="font-extrabold text-xs tracking-wide uppercase text-[#1C1D21]">{stage.name}</h3>
                   </div>
                   <span
-                    className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
-                    style={{
-                      backgroundColor: `${stage.color}25`,
-                      color: stage.color
-                    }}
+                    className="text-xs font-black px-2 py-0.5 rounded-full"
+                    style={{ backgroundColor: `${stage.color}20`, color: stage.color }}
                   >
                     {stage.conversations.length}
                   </span>
                 </div>
 
-                {/* Cards de Leads */}
-                <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin">
+                {/* Cards */}
+                <div className="flex-1 overflow-y-auto scrollbar-thin p-3 space-y-3 bg-[#DAD6C9]/60">
                   {stage.conversations.length === 0 ? (
-                    <div className="py-12 text-center text-white/20 text-xs border border-dashed border-white/[0.05] rounded-xl">
-                      Nenhum lead nesta etapa
+                    <div className="py-12 text-center text-[#CAC5B7] text-xs border border-dashed border-[#CAC5B7] rounded-2xl font-semibold">
+                      Nenhum lead aqui
                     </div>
                   ) : (
                     stage.conversations.map(conv => {
@@ -178,47 +177,49 @@ export default function PipelinePage() {
                         <div
                           key={conv.id}
                           className={clsx(
-                            'card p-4 hover:border-brand-500/40 transition-all duration-200 shadow-md group relative bg-surface-800/80',
+                            'card !p-4 group relative transition-all duration-200 hover:shadow-tactile-card',
                             movingId === conv.id && 'opacity-50 pointer-events-none'
                           )}
                         >
-                          {/* Contato Info */}
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h4 className="font-semibold text-sm text-white group-hover:text-brand-300 transition-colors">
-                                {conv.contactName || conv.contactPhone}
-                              </h4>
-                              <p className="text-xs text-white/40 flex items-center gap-1 mt-0.5 font-mono">
-                                <Phone size={10} />
-                                {conv.contactPhone}
-                              </p>
+                          {/* Lead header */}
+                          <div className="flex items-start justify-between mb-2.5">
+                            <div className="flex items-start gap-2.5">
+                              <div className="w-8 h-8 rounded-full bg-[#18191B] text-[#F5C518] flex items-center justify-center text-xs font-black flex-shrink-0 shadow-sm">
+                                {(conv.contactName || conv.contactPhone)[0].toUpperCase()}
+                              </div>
+                              <div className="min-w-0">
+                                <h4 className="font-extrabold text-xs text-[#1C1D21] truncate max-w-[130px] group-hover:text-[#232528]">
+                                  {conv.contactName || conv.contactPhone}
+                                </h4>
+                                <p className="text-[10px] text-[#797D8A] font-semibold flex items-center gap-1 mt-0.5">
+                                  <Phone size={9} /> {conv.contactPhone}
+                                </p>
+                              </div>
                             </div>
-
                             <button
                               onClick={() => router.push('/inbox')}
-                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-white/10 rounded text-white/60 hover:text-white"
+                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-[#DAD6C9] rounded-full text-[#797D8A] hover:text-[#1C1D21]"
                               title="Abrir no Inbox"
                             >
-                              <ExternalLink size={13} />
+                              <ExternalLink size={12} />
                             </button>
                           </div>
 
-                          {/* Última mensagem */}
-                          <p className="text-xs text-white/50 line-clamp-2 mt-2 leading-relaxed bg-surface-900/60 p-2 rounded-lg border border-white/[0.03]">
-                            {lastMsg || 'Sem mensagens recentes'}
-                          </p>
+                          {/* Last message preview */}
+                          {lastMsg && (
+                            <p className="text-[11px] text-[#524D41] line-clamp-2 leading-relaxed bg-[#DAD6C9]/60 px-3 py-2 rounded-xl border border-black/[0.03] mb-2.5 font-medium">
+                              {lastMsg}
+                            </p>
+                          )}
 
                           {/* Tags */}
                           {conv.tags && conv.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mt-2.5">
+                            <div className="flex flex-wrap gap-1 mb-2.5">
                               {conv.tags.map((t: any) => (
                                 <span
                                   key={t.tagId}
-                                  className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
-                                  style={{
-                                    backgroundColor: `${t.tag.color}25`,
-                                    color: t.tag.color
-                                  }}
+                                  className="text-[9px] px-2 py-0.5 rounded-full font-semibold"
+                                  style={{ backgroundColor: `${t.tag.color}20`, color: t.tag.color }}
                                 >
                                   {t.tag.name}
                                 </span>
@@ -226,23 +227,20 @@ export default function PipelinePage() {
                             </div>
                           )}
 
-                          {/* Footer do Card com Timestamp e Menu de Mudança Rápida */}
-                          <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-white/[0.06] text-[11px] text-white/30">
-                            <span className="flex items-center gap-1">
-                              <Clock size={11} />
+                          {/* Footer */}
+                          <div className="flex items-center justify-between pt-2 border-t border-[#CAC5B7]/60 text-[10px] text-[#797D8A]">
+                            <span className="flex items-center gap-1 font-semibold">
+                              <Clock size={10} />
                               {format(new Date(conv.updatedAt), 'dd/MM HH:mm', { locale: ptBR })}
                             </span>
 
-                            {/* Menu de Mover Rápido para Próxima Coluna */}
                             <select
                               value={stage.id}
                               onChange={e => moveConversation(conv.id, e.target.value)}
-                              className="bg-surface-700 text-white/60 hover:text-white text-[10px] px-1.5 py-0.5 rounded border border-white/[0.08] outline-none cursor-pointer"
+                              className="bg-white text-[#18191B] text-[10px] px-2 py-0.5 rounded-full border border-black/[0.06] outline-none cursor-pointer font-bold shadow-sm hover:border-[#232528] transition-colors"
                             >
                               {board.map(s => (
-                                <option key={s.id} value={s.id}>
-                                  Mover: {s.name}
-                                </option>
+                                <option key={s.id} value={s.id}>→ {s.name}</option>
                               ))}
                             </select>
                           </div>
@@ -252,9 +250,9 @@ export default function PipelinePage() {
                   )}
                 </div>
               </div>
-            )
-          })}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
